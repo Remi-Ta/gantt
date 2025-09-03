@@ -1,0 +1,2283 @@
+
+<html>
+<head>
+    <title>Gantt + Rapport battements</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #fafafa;
+        }
+        h1, h2, h3 {
+            font-weight: 600;
+            color: #001b69;
+        }
+        #table_rapport {
+            width: 100%;
+            margin-top: 20px;
+            font-size: 14px;
+            clear: both;
+            border: none;
+            border-collapse: collapse;
+        }
+        #table_rapport th {
+            background-color: #f0f8ff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+        #table_rapport td {
+            padding: 8px;
+            text-align: center;
+            border: none;
+            border-bottom: 1px solid #eee;
+        }
+        #table_rapport tr:hover {
+            background-color: #f5f5f5;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+        }
+        .court {
+            background-color: #ffd6d6;
+        }
+        .long {
+            background-color: #fff4c2;
+        }
+        .stats-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 100%;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .stats-table td {
+            padding: 8px;
+            text-align: left;
+        }
+        .stats-table td:first-child {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gantt des véhicules</h1>
+    <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="gantt_div" class="plotly-graph-div" style="height:1440px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("gantt_div")) {                    Plotly.newPlot(                        "gantt_div",                        [{"base":["1900-01-01T06:36:00.000000000","1900-01-01T06:30:00.000000000","1900-01-01T06:54:00.000000000","1900-01-01T07:00:00.000000000","1900-01-01T07:14:00.000000000","1900-01-01T07:29:00.000000000","1900-01-01T07:44:00.000000000","1900-01-01T08:07:00.000000000","1900-01-01T08:14:00.000000000","1900-01-01T08:29:00.000000000","1900-01-01T08:44:00.000000000","1900-01-01T08:59:00.000000000","1900-01-01T09:14:00.000000000","1900-01-01T09:29:00.000000000","1900-01-01T09:44:00.000000000","1900-01-01T09:59:00.000000000","1900-01-01T10:14:00.000000000","1900-01-01T10:29:00.000000000","1900-01-01T10:44:00.000000000","1900-01-01T10:59:00.000000000","1900-01-01T11:14:00.000000000","1900-01-01T11:28:00.000000000","1900-01-01T11:43:00.000000000","1900-01-01T11:58:00.000000000","1900-01-01T12:13:00.000000000","1900-01-01T12:29:00.000000000","1900-01-01T12:44:00.000000000","1900-01-01T12:59:00.000000000","1900-01-01T13:14:00.000000000","1900-01-01T13:29:00.000000000","1900-01-01T13:44:00.000000000","1900-01-01T13:59:00.000000000","1900-01-01T14:14:00.000000000","1900-01-01T14:29:00.000000000","1900-01-01T14:44:00.000000000","1900-01-01T14:58:00.000000000","1900-01-01T15:13:00.000000000","1900-01-01T15:28:00.000000000","1900-01-01T15:43:00.000000000","1900-01-01T16:08:00.000000000","1900-01-01T16:23:00.000000000","1900-01-01T16:28:00.000000000","1900-01-01T16:43:00.000000000","1900-01-01T17:07:00.000000000","1900-01-01T17:12:00.000000000","1900-01-01T17:37:00.000000000","1900-01-01T17:42:00.000000000","1900-01-01T18:07:00.000000000","1900-01-01T18:12:00.000000000","1900-01-01T18:28:00.000000000","1900-01-01T18:43:00.000000000","1900-01-01T18:59:00.000000000","1900-01-01T19:15:00.000000000","1900-01-01T19:30:00.000000000","1900-01-01T19:45:00.000000000","1900-01-01T20:00:00.000000000","1900-01-01T20:15:00.000000000","1900-01-01T06:31:00.000000000","1900-01-01T06:46:00.000000000","1900-01-01T07:01:00.000000000","1900-01-01T07:16:00.000000000","1900-01-01T07:31:00.000000000","1900-01-01T07:44:00.000000000","1900-01-01T07:59:00.000000000","1900-01-01T08:14:00.000000000","1900-01-01T08:29:00.000000000","1900-01-01T08:44:00.000000000","1900-01-01T09:01:00.000000000","1900-01-01T09:16:00.000000000","1900-01-01T09:31:00.000000000","1900-01-01T09:46:00.000000000","1900-01-01T10:01:00.000000000","1900-01-01T10:16:00.000000000","1900-01-01T10:31:00.000000000","1900-01-01T10:46:00.000000000","1900-01-01T11:01:00.000000000","1900-01-01T11:16:00.000000000","1900-01-01T11:30:00.000000000","1900-01-01T11:45:00.000000000","1900-01-01T12:00:00.000000000","1900-01-01T12:15:00.000000000","1900-01-01T12:30:00.000000000","1900-01-01T12:46:00.000000000","1900-01-01T13:01:00.000000000","1900-01-01T13:16:00.000000000","1900-01-01T13:31:00.000000000","1900-01-01T13:46:00.000000000","1900-01-01T14:01:00.000000000","1900-01-01T14:16:00.000000000","1900-01-01T14:31:00.000000000","1900-01-01T14:46:00.000000000","1900-01-01T15:01:00.000000000","1900-01-01T15:16:00.000000000","1900-01-01T15:31:00.000000000","1900-01-01T15:46:00.000000000","1900-01-01T16:01:00.000000000","1900-01-01T16:14:00.000000000","1900-01-01T16:29:00.000000000","1900-01-01T16:44:00.000000000","1900-01-01T16:59:00.000000000","1900-01-01T17:14:00.000000000","1900-01-01T17:29:00.000000000","1900-01-01T17:44:00.000000000","1900-01-01T17:59:00.000000000","1900-01-01T18:14:00.000000000","1900-01-01T18:30:00.000000000","1900-01-01T18:45:00.000000000","1900-01-01T19:01:00.000000000","1900-01-01T19:16:00.000000000","1900-01-01T19:31:00.000000000","1900-01-01T19:46:00.000000000","1900-01-01T20:01:00.000000000","1900-01-01T20:16:00.000000000","1900-01-01T20:31:00.000000000"],"customdata":[["1","Maisons Rouges","Hauts de Bessines","06:36:00","07:06:00","0:30:00","0:04:30"],["1","Mairie de Chauray","Hauts de Bessines","06:30:00","07:21:00","0:51:00","0:07:39"],["1","Mairie de Chauray","Hauts de Bessines","06:54:00","07:36:00","0:42:00","0:06:18"],["1","Mairie de Chauray","Hauts de Bessines","07:00:00","07:52:00","0:52:00","0:07:48"],["1","Mairie de Chauray","Hauts de Bessines","07:14:00","08:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","07:29:00","08:23:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","07:44:00","08:38:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","08:07:00","08:53:00","0:46:00","0:06:54"],["1","Mairie de Chauray","Hauts de Bessines","08:14:00","09:08:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","08:29:00","09:23:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","08:44:00","09:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","08:59:00","09:52:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","09:14:00","10:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","09:29:00","10:22:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","09:44:00","10:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","09:59:00","10:52:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","10:14:00","11:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","10:29:00","11:22:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","10:44:00","11:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","10:59:00","11:52:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","11:14:00","12:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","11:28:00","12:22:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","11:43:00","12:37:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","11:58:00","12:52:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","12:13:00","13:07:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","12:29:00","13:22:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","12:44:00","13:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","12:59:00","13:52:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","13:14:00","14:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","13:29:00","14:22:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","13:44:00","14:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","13:59:00","14:52:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","14:14:00","15:07:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","14:29:00","15:22:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","14:44:00","15:37:00","0:53:00","0:07:57"],["1","Mairie de Chauray","Hauts de Bessines","14:58:00","15:52:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","15:13:00","16:07:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","15:28:00","16:22:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","15:43:00","16:37:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","16:08:00","16:53:00","0:45:00","0:06:45"],["1","Mairie de Chauray","Hauts de Bessines","16:23:00","17:08:00","0:45:00","0:06:45"],["1","Mairie de Chauray","Hauts de Bessines","16:28:00","17:24:00","0:56:00","0:08:24"],["1","Mairie de Chauray","Hauts de Bessines","16:43:00","17:39:00","0:56:00","0:08:24"],["1","Mairie de Chauray","Hauts de Bessines","17:07:00","17:54:00","0:47:00","0:07:03"],["1","Mairie de Chauray","Hauts de Bessines","17:12:00","18:09:00","0:57:00","0:08:33"],["1","Mairie de Chauray","Hauts de Bessines","17:37:00","18:24:00","0:47:00","0:07:03"],["1","Mairie de Chauray","Hauts de Bessines","17:42:00","18:39:00","0:57:00","0:08:33"],["1","Mairie de Chauray","Hauts de Bessines","18:07:00","18:53:00","0:46:00","0:06:54"],["1","Mairie de Chauray","Hauts de Bessines","18:12:00","19:08:00","0:56:00","0:08:24"],["1","Mairie de Chauray","Hauts de Bessines","18:28:00","19:23:00","0:55:00","0:08:15"],["1","Mairie de Chauray","Hauts de Bessines","18:43:00","19:37:00","0:54:00","0:08:06"],["1","Mairie de Chauray","Hauts de Bessines","18:59:00","19:51:00","0:52:00","0:07:48"],["1","Mairie de Chauray","Hauts de Bessines","19:15:00","20:06:00","0:51:00","0:07:39"],["1","Mairie de Chauray","Hauts de Bessines","19:30:00","20:21:00","0:51:00","0:07:39"],["1","Mairie de Chauray","Hauts de Bessines","19:45:00","20:36:00","0:51:00","0:07:39"],["1","Mairie de Chauray","Hauts de Bessines","20:00:00","20:51:00","0:51:00","0:07:39"],["1","Mairie de Chauray","P\u00f4le Atlantique","20:15:00","20:56:00","0:41:00","0:06:09"],["1","Hauts de Bessines","Mairie de Chauray","06:31:00","07:22:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Mairie de Chauray","06:46:00","07:37:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Mairie de Chauray","07:01:00","07:44:00","0:43:00","0:06:27"],["1","Hauts de Bessines","Mairie de Chauray","07:16:00","08:08:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","07:31:00","08:23:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","07:44:00","08:30:00","0:46:00","0:06:54"],["1","Hauts de Bessines","Mairie de Chauray","07:59:00","08:53:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","08:14:00","09:00:00","0:46:00","0:06:54"],["1","Hauts de Bessines","Mairie de Chauray","08:29:00","09:23:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","08:44:00","09:38:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","09:01:00","09:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","09:16:00","10:08:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","09:31:00","10:23:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","09:46:00","10:38:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","10:01:00","10:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","10:16:00","11:08:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","10:31:00","11:23:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","10:46:00","11:38:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","11:01:00","11:54:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","11:16:00","12:09:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","11:30:00","12:24:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","11:45:00","12:39:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","12:00:00","12:54:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","12:15:00","13:09:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","12:30:00","13:24:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","12:46:00","13:39:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","13:01:00","13:54:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","13:16:00","14:09:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","13:31:00","14:24:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","13:46:00","14:39:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","14:01:00","14:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","14:16:00","15:08:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","14:31:00","15:23:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","14:46:00","15:38:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","15:01:00","15:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","15:16:00","16:08:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","15:31:00","16:23:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","15:46:00","16:38:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","16:01:00","16:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","16:14:00","17:01:00","0:47:00","0:07:03"],["1","Hauts de Bessines","Mairie de Chauray","16:29:00","17:24:00","0:55:00","0:08:15"],["1","Hauts de Bessines","Mairie de Chauray","16:44:00","17:39:00","0:55:00","0:08:15"],["1","Hauts de Bessines","Mairie de Chauray","16:59:00","17:54:00","0:55:00","0:08:15"],["1","Hauts de Bessines","Mairie de Chauray","17:14:00","18:01:00","0:47:00","0:07:03"],["1","Hauts de Bessines","Mairie de Chauray","17:29:00","18:24:00","0:55:00","0:08:15"],["1","Hauts de Bessines","Mairie de Chauray","17:44:00","18:39:00","0:55:00","0:08:15"],["1","Hauts de Bessines","Mairie de Chauray","17:59:00","18:53:00","0:54:00","0:08:06"],["1","Hauts de Bessines","Mairie de Chauray","18:14:00","19:01:00","0:47:00","0:07:03"],["1","Hauts de Bessines","Mairie de Chauray","18:30:00","19:23:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","18:45:00","19:38:00","0:53:00","0:07:57"],["1","Hauts de Bessines","Mairie de Chauray","19:01:00","19:53:00","0:52:00","0:07:48"],["1","Hauts de Bessines","Mairie de Chauray","19:16:00","20:07:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Mairie de Chauray","19:31:00","20:22:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Mairie de Chauray","19:46:00","20:37:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Mairie de Chauray","20:01:00","20:52:00","0:51:00","0:07:39"],["1","Hauts de Bessines","Maisons Rouges","20:16:00","20:47:00","0:31:00","0:04:39"],["1","Hauts de Bessines","Br\u00e8che","20:31:00","20:53:00","0:22:00","0:03:18"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"1","marker":{"color":"#f50f1e","pattern":{"shape":""}},"name":"1","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"QHcbACCxLgDAcyYAgJsvAOCFMABAcDEAQHAxAEAdKgBAcDEAQHAxAOCFMADghTAA4IUwAOCFMADghTAA4IUwAOCFMADghTAA4IUwAOCFMADghTAAQHAxAEBwMQBAcDEAQHAxAOCFMADghTAA4IUwAOCFMADghTAA4IUwAOCFMADghTAA4IUwAOCFMABAcDEAQHAxAEBwMQBAcDEA4DIpAOAyKQAARTMAAEUzAKAHKwBgLzQAoAcrAGAvNABAHSoAAEUzAKBaMgBAcDEAgJsvACCxLgAgsS4AILEuACCxLgBgiSUAILEuACCxLgAgXicAgJsvAICbLwBAHSoAQHAxAEAdKgBAcDEAQHAxAICbLwCAmy8AgJsvAICbLwCAmy8AgJsvAICbLwCAmy8A4IUwAOCFMABAcDEAQHAxAEBwMQBAcDEAQHAxAOCFMADghTAA4IUwAOCFMADghTAAgJsvAICbLwCAmy8AgJsvAICbLwCAmy8AgJsvAICbLwCAmy8AoAcrAKBaMgCgWjIAoFoyAKAHKwCgWjIAoFoyAEBwMQCgBysA4IUwAOCFMACAmy8AILEuACCxLgAgsS4AILEuAKBhHABAJBQA"},"xaxis":"x","y":["1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F","1G","1H","1A","1B","1C","1D","1E","1F"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:37:00.000000000","1900-01-01T06:57:00.000000000","1900-01-01T07:17:00.000000000","1900-01-01T07:37:00.000000000","1900-01-01T07:57:00.000000000","1900-01-01T08:16:00.000000000","1900-01-01T08:36:00.000000000","1900-01-01T08:56:00.000000000","1900-01-01T09:16:00.000000000","1900-01-01T09:36:00.000000000","1900-01-01T09:56:00.000000000","1900-01-01T10:16:00.000000000","1900-01-01T10:36:00.000000000","1900-01-01T10:56:00.000000000","1900-01-01T11:16:00.000000000","1900-01-01T11:36:00.000000000","1900-01-01T11:56:00.000000000","1900-01-01T12:16:00.000000000","1900-01-01T12:36:00.000000000","1900-01-01T12:57:00.000000000","1900-01-01T13:17:00.000000000","1900-01-01T13:37:00.000000000","1900-01-01T13:57:00.000000000","1900-01-01T14:17:00.000000000","1900-01-01T14:37:00.000000000","1900-01-01T14:57:00.000000000","1900-01-01T15:16:00.000000000","1900-01-01T15:36:00.000000000","1900-01-01T15:56:00.000000000","1900-01-01T16:16:00.000000000","1900-01-01T16:36:00.000000000","1900-01-01T16:56:00.000000000","1900-01-01T17:16:00.000000000","1900-01-01T17:36:00.000000000","1900-01-01T17:56:00.000000000","1900-01-01T18:16:00.000000000","1900-01-01T18:36:00.000000000","1900-01-01T18:56:00.000000000","1900-01-01T19:16:00.000000000","1900-01-01T19:36:00.000000000","1900-01-01T19:56:00.000000000","1900-01-01T20:17:00.000000000","1900-01-01T06:38:00.000000000","1900-01-01T06:58:00.000000000","1900-01-01T07:18:00.000000000","1900-01-01T07:38:00.000000000","1900-01-01T07:58:00.000000000","1900-01-01T08:18:00.000000000","1900-01-01T08:38:00.000000000","1900-01-01T08:58:00.000000000","1900-01-01T09:18:00.000000000","1900-01-01T09:38:00.000000000","1900-01-01T09:58:00.000000000","1900-01-01T10:18:00.000000000","1900-01-01T10:38:00.000000000","1900-01-01T10:58:00.000000000","1900-01-01T11:18:00.000000000","1900-01-01T11:38:00.000000000","1900-01-01T11:58:00.000000000","1900-01-01T12:18:00.000000000","1900-01-01T12:38:00.000000000","1900-01-01T12:58:00.000000000","1900-01-01T13:18:00.000000000","1900-01-01T13:38:00.000000000","1900-01-01T13:58:00.000000000","1900-01-01T14:18:00.000000000","1900-01-01T14:38:00.000000000","1900-01-01T14:58:00.000000000","1900-01-01T15:18:00.000000000","1900-01-01T15:38:00.000000000","1900-01-01T15:58:00.000000000","1900-01-01T16:18:00.000000000","1900-01-01T16:38:00.000000000","1900-01-01T16:58:00.000000000","1900-01-01T17:18:00.000000000","1900-01-01T17:38:00.000000000","1900-01-01T17:58:00.000000000","1900-01-01T18:18:00.000000000","1900-01-01T18:38:00.000000000","1900-01-01T18:58:00.000000000","1900-01-01T19:18:00.000000000","1900-01-01T19:38:00.000000000","1900-01-01T19:58:00.000000000","1900-01-01T20:18:00.000000000"],"customdata":[["2","P\u00f4le Universitaire","Terre de Sport","06:37:00","07:10:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","06:57:00","07:30:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","07:17:00","07:50:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","07:37:00","08:10:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","07:57:00","08:30:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","08:16:00","08:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","08:36:00","09:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","08:56:00","09:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","09:16:00","09:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","09:36:00","10:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","09:56:00","10:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","10:16:00","10:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","10:36:00","11:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","10:56:00","11:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","11:16:00","11:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","11:36:00","12:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","11:56:00","12:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","12:16:00","12:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","12:36:00","13:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","12:57:00","13:30:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","13:17:00","13:50:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","13:37:00","14:10:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","13:57:00","14:30:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","14:17:00","14:50:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","14:37:00","15:10:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","14:57:00","15:30:00","0:33:00","0:04:57"],["2","P\u00f4le Universitaire","Terre de Sport","15:16:00","15:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","15:36:00","16:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","15:56:00","16:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","16:16:00","16:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","16:36:00","17:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","16:56:00","17:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","17:16:00","17:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","17:36:00","18:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","17:56:00","18:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","18:16:00","18:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","18:36:00","19:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","18:56:00","19:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","19:16:00","19:50:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","19:36:00","20:10:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Terre de Sport","19:56:00","20:30:00","0:34:00","0:05:06"],["2","P\u00f4le Universitaire","Br\u00e8che","20:17:00","20:33:00","0:16:00","0:02:24"],["2","Terre de Sport","P\u00f4le Universitaire","06:38:00","07:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","06:58:00","07:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","07:18:00","07:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","07:38:00","08:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","07:58:00","08:32:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","08:18:00","08:52:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","08:38:00","09:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","08:58:00","09:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","09:18:00","09:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","09:38:00","10:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","09:58:00","10:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","10:18:00","10:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","10:38:00","11:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","10:58:00","11:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","11:18:00","11:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","11:38:00","12:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","11:58:00","12:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","12:18:00","12:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","12:38:00","13:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","12:58:00","13:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","13:18:00","13:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","13:38:00","14:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","13:58:00","14:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","14:18:00","14:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","14:38:00","15:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","14:58:00","15:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","15:18:00","15:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","15:38:00","16:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","15:58:00","16:32:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","16:18:00","16:52:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","16:38:00","17:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","16:58:00","17:32:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","17:18:00","17:52:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","17:38:00","18:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","17:58:00","18:32:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","18:18:00","18:52:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","18:38:00","19:12:00","0:34:00","0:05:06"],["2","Terre de Sport","P\u00f4le Universitaire","18:58:00","19:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","19:18:00","19:51:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","19:38:00","20:11:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","19:58:00","20:31:00","0:33:00","0:04:57"],["2","Terre de Sport","P\u00f4le Universitaire","20:18:00","20:51:00","0:33:00","0:04:57"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"2","marker":{"color":"#0737df","pattern":{"shape":""}},"name":"2","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"YDYeAGA2HgBgNh4AYDYeAGA2HgDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwAApg4AYDYeAGA2HgBgNh4AwCAfAMAgHwDAIB8AwCAfAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgBgNh4AYDYeAGA2HgBgNh4AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAMAgHwDAIB8AwCAfAGA2HgBgNh4AYDYeAGA2HgBgNh4A"},"xaxis":"x","y":["2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D","2A","2B","2C","2D"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:30:00.000000000","1900-01-01T06:50:00.000000000","1900-01-01T07:10:00.000000000","1900-01-01T07:30:00.000000000","1900-01-01T07:53:00.000000000","1900-01-01T08:08:00.000000000","1900-01-01T08:33:00.000000000","1900-01-01T09:00:00.000000000","1900-01-01T09:30:00.000000000","1900-01-01T10:05:00.000000000","1900-01-01T10:30:00.000000000","1900-01-01T11:00:00.000000000","1900-01-01T11:29:00.000000000","1900-01-01T11:54:00.000000000","1900-01-01T12:09:00.000000000","1900-01-01T12:29:00.000000000","1900-01-01T12:50:00.000000000","1900-01-01T13:10:00.000000000","1900-01-01T13:30:00.000000000","1900-01-01T14:00:00.000000000","1900-01-01T14:30:00.000000000","1900-01-01T14:55:00.000000000","1900-01-01T15:25:00.000000000","1900-01-01T15:50:00.000000000","1900-01-01T16:08:00.000000000","1900-01-01T16:23:00.000000000","1900-01-01T16:48:00.000000000","1900-01-01T17:08:00.000000000","1900-01-01T17:28:00.000000000","1900-01-01T17:48:00.000000000","1900-01-01T18:08:00.000000000","1900-01-01T18:34:00.000000000","1900-01-01T19:05:00.000000000","1900-01-01T19:30:00.000000000","1900-01-01T20:00:00.000000000","1900-01-01T06:55:00.000000000","1900-01-01T06:54:00.000000000","1900-01-01T07:11:00.000000000","1900-01-01T07:26:00.000000000","1900-01-01T07:49:00.000000000","1900-01-01T08:08:00.000000000","1900-01-01T08:28:00.000000000","1900-01-01T09:00:00.000000000","1900-01-01T09:32:00.000000000","1900-01-01T10:02:00.000000000","1900-01-01T10:32:00.000000000","1900-01-01T11:02:00.000000000","1900-01-01T11:27:00.000000000","1900-01-01T11:52:00.000000000","1900-01-01T12:12:00.000000000","1900-01-01T12:55:00.000000000","1900-01-01T12:54:00.000000000","1900-01-01T13:14:00.000000000","1900-01-01T13:34:00.000000000","1900-01-01T14:04:00.000000000","1900-01-01T14:34:00.000000000","1900-01-01T15:04:00.000000000","1900-01-01T15:31:00.000000000","1900-01-01T15:50:00.000000000","1900-01-01T16:10:00.000000000","1900-01-01T16:24:00.000000000","1900-01-01T16:49:00.000000000","1900-01-01T17:09:00.000000000","1900-01-01T17:28:00.000000000","1900-01-01T18:15:00.000000000","1900-01-01T18:08:00.000000000","1900-01-01T18:31:00.000000000","1900-01-01T19:03:00.000000000","1900-01-01T19:33:00.000000000","1900-01-01T20:04:00.000000000"],"customdata":[["3","Mairie d\u2019Aiffres","Sainte-Pezenne","06:30:00","07:13:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Br\u00e8che","06:50:00","07:13:00","0:23:00","0:03:27"],["3","Mairie d\u2019Aiffres","Br\u00e8che","07:10:00","07:33:00","0:23:00","0:03:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","07:30:00","08:18:00","0:48:00","0:07:12"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","07:53:00","08:43:00","0:50:00","0:07:30"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","08:08:00","08:58:00","0:50:00","0:07:30"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","08:33:00","09:22:00","0:49:00","0:07:21"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","09:00:00","09:43:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","09:30:00","10:13:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","10:05:00","10:48:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","10:30:00","11:14:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","11:00:00","11:44:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","11:29:00","12:16:00","0:47:00","0:07:03"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","11:54:00","12:41:00","0:47:00","0:07:03"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","12:09:00","12:54:00","0:45:00","0:06:45"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","12:29:00","13:14:00","0:45:00","0:06:45"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","12:50:00","13:33:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","13:10:00","13:54:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","13:30:00","14:14:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","14:00:00","14:44:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","14:30:00","15:14:00","0:44:00","0:06:36"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","14:55:00","15:40:00","0:45:00","0:06:45"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","15:25:00","16:13:00","0:48:00","0:07:12"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","15:50:00","16:38:00","0:48:00","0:07:12"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","16:08:00","16:58:00","0:50:00","0:07:30"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","16:23:00","17:13:00","0:50:00","0:07:30"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","16:48:00","17:39:00","0:51:00","0:07:39"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","17:08:00","17:59:00","0:51:00","0:07:39"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","17:28:00","18:19:00","0:51:00","0:07:39"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","17:48:00","18:38:00","0:50:00","0:07:30"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","18:08:00","18:57:00","0:49:00","0:07:21"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","18:34:00","19:20:00","0:46:00","0:06:54"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","19:05:00","19:48:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Sainte-Pezenne","19:30:00","20:13:00","0:43:00","0:06:27"],["3","Mairie d\u2019Aiffres","Br\u00e8che","20:00:00","20:23:00","0:23:00","0:03:27"],["3","Br\u00e8che","Mairie d\u2019Aiffres","06:55:00","07:18:00","0:23:00","0:03:27"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","06:54:00","07:38:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","07:11:00","07:59:00","0:48:00","0:07:12"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","07:26:00","08:13:00","0:47:00","0:07:03"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","07:49:00","08:39:00","0:50:00","0:07:30"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","08:08:00","08:59:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","08:28:00","09:19:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","09:00:00","09:48:00","0:48:00","0:07:12"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","09:32:00","10:18:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","10:02:00","10:48:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","10:32:00","11:18:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","11:02:00","11:48:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","11:27:00","12:13:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","11:52:00","12:38:00","0:46:00","0:06:54"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","12:12:00","12:58:00","0:46:00","0:06:54"],["3","Br\u00e8che","Mairie d\u2019Aiffres","12:55:00","13:18:00","0:23:00","0:03:27"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","12:54:00","13:38:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","13:14:00","13:58:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","13:34:00","14:18:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","14:04:00","14:48:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","14:34:00","15:18:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","15:04:00","15:48:00","0:44:00","0:06:36"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","15:31:00","16:18:00","0:47:00","0:07:03"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","15:50:00","16:38:00","0:48:00","0:07:12"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","16:10:00","16:59:00","0:49:00","0:07:21"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","16:24:00","17:15:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","16:49:00","17:40:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","17:09:00","18:00:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","17:28:00","18:20:00","0:52:00","0:07:48"],["3","Br\u00e8che","Mairie d\u2019Aiffres","18:15:00","18:40:00","0:25:00","0:03:45"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","18:08:00","18:59:00","0:51:00","0:07:39"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","18:31:00","19:19:00","0:48:00","0:07:12"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","19:03:00","19:48:00","0:45:00","0:06:45"],["3","Sainte-Pezenne","Mairie d\u2019Aiffres","19:33:00","20:18:00","0:45:00","0:06:45"],["3","Sainte-Pezenne","Br\u00e8che","20:04:00","20:23:00","0:19:00","0:02:51"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"3","marker":{"color":"#19a227","pattern":{"shape":""}},"name":"3","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"IF4nAKAOFQCgDhUAAPIrAMDGLQDAxi0AYNwsACBeJwAgXicAIF4nAIBIKACASCgAoAcrAKAHKwDgMikA4DIpACBeJwCASCgAgEgoAIBIKACASCgA4DIpAADyKwAA8isAwMYtAMDGLQAgsS4AILEuACCxLgDAxi0AYNwsAEAdKgAgXicAIF4nAKAOFQCgDhUAgEgoAADyKwCgBysAwMYtACCxLgAgsS4AAPIrAEAdKgBAHSoAQB0qAEAdKgBAHSoAQB0qAEAdKgCgDhUAgEgoAIBIKACASCgAgEgoAIBIKACASCgAoAcrAADyKwBg3CwAILEuACCxLgAgsS4AgJsvAGDjFgAgsS4AAPIrAOAyKQDgMikAIGURAA=="},"xaxis":"x","y":["3A","7B","3C","3D","3E","3F","3A","3B","3D","3E","3A","3B","3D","3E","3F","3A","3B","3C","3D","3F","3A","3C","3D","3B","3F","3A","3C","3E","3D","3B","3F","3A","3E","3D","3F","3D","3E","3F","3A","3B","3C","3D","3E","3A","3B","3D","3E","3A","3B","3C","3D","3E","3F","3A","3C","3D","3F","3A","3C","3E","3D","3B","3F","3A","3C","3E","3D","3F","3A","3E"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:31:00.000000000","1900-01-01T07:01:00.000000000","1900-01-01T07:26:00.000000000","1900-01-01T07:41:00.000000000","1900-01-01T08:00:00.000000000","1900-01-01T08:24:00.000000000","1900-01-01T08:39:00.000000000","1900-01-01T09:00:00.000000000","1900-01-01T09:30:00.000000000","1900-01-01T10:00:00.000000000","1900-01-01T10:30:00.000000000","1900-01-01T11:00:00.000000000","1900-01-01T11:30:00.000000000","1900-01-01T11:55:00.000000000","1900-01-01T12:10:00.000000000","1900-01-01T12:30:00.000000000","1900-01-01T12:56:00.000000000","1900-01-01T13:11:00.000000000","1900-01-01T13:41:00.000000000","1900-01-01T14:11:00.000000000","1900-01-01T14:41:00.000000000","1900-01-01T15:11:00.000000000","1900-01-01T15:39:00.000000000","1900-01-01T15:59:00.000000000","1900-01-01T16:14:00.000000000","1900-01-01T16:39:00.000000000","1900-01-01T16:59:00.000000000","1900-01-01T17:24:00.000000000","1900-01-01T17:39:00.000000000","1900-01-01T17:59:00.000000000","1900-01-01T18:24:00.000000000","1900-01-01T18:39:00.000000000","1900-01-01T19:00:00.000000000","1900-01-01T19:30:00.000000000","1900-01-01T20:01:00.000000000","1900-01-01T06:31:00.000000000","1900-01-01T06:46:00.000000000","1900-01-01T07:02:00.000000000","1900-01-01T07:22:00.000000000","1900-01-01T07:37:00.000000000","1900-01-01T08:02:00.000000000","1900-01-01T08:22:00.000000000","1900-01-01T08:37:00.000000000","1900-01-01T09:02:00.000000000","1900-01-01T09:37:00.000000000","1900-01-01T10:02:00.000000000","1900-01-01T10:37:00.000000000","1900-01-01T11:02:00.000000000","1900-01-01T11:37:00.000000000","1900-01-01T11:52:00.000000000","1900-01-01T12:12:00.000000000","1900-01-01T12:37:00.000000000","1900-01-01T12:52:00.000000000","1900-01-01T13:17:00.000000000","1900-01-01T13:32:00.000000000","1900-01-01T14:02:00.000000000","1900-01-01T14:37:00.000000000","1900-01-01T15:07:00.000000000","1900-01-01T15:32:00.000000000","1900-01-01T16:10:00.000000000","1900-01-01T16:22:00.000000000","1900-01-01T16:37:00.000000000","1900-01-01T17:02:00.000000000","1900-01-01T17:22:00.000000000","1900-01-01T17:42:00.000000000","1900-01-01T18:02:00.000000000","1900-01-01T18:27:00.000000000","1900-01-01T18:52:00.000000000","1900-01-01T19:23:00.000000000","1900-01-01T19:58:00.000000000"],"customdata":[["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","06:31:00","07:17:00","0:46:00","0:06:54"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","07:01:00","07:47:00","0:46:00","0:06:54"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","07:26:00","08:13:00","0:47:00","0:07:03"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","07:41:00","08:28:00","0:47:00","0:07:03"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","08:00:00","08:48:00","0:48:00","0:07:12"],["4","P\u00f4le Universitaire","Mairie de Chauray","08:24:00","09:09:00","0:45:00","0:06:45"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","08:39:00","09:32:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","09:00:00","09:48:00","0:48:00","0:07:12"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","09:30:00","10:22:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","10:00:00","10:48:00","0:48:00","0:07:12"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","10:30:00","11:22:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","11:00:00","11:48:00","0:48:00","0:07:12"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","11:30:00","12:22:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","11:55:00","12:43:00","0:48:00","0:07:12"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","12:10:00","13:02:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","12:30:00","13:22:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","12:56:00","13:43:00","0:47:00","0:07:03"],["4","P\u00f4le Universitaire","Mairie de Chauray","13:11:00","13:54:00","0:43:00","0:06:27"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","13:41:00","14:32:00","0:51:00","0:07:39"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","14:11:00","14:58:00","0:47:00","0:07:03"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","14:41:00","15:28:00","0:47:00","0:07:03"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","15:11:00","16:02:00","0:51:00","0:07:39"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","15:39:00","16:28:00","0:49:00","0:07:21"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","15:59:00","16:52:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","16:14:00","17:07:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","16:39:00","17:32:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","16:59:00","17:52:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","17:24:00","18:17:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","17:39:00","18:32:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","17:59:00","18:52:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","18:24:00","19:17:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","18:39:00","19:32:00","0:53:00","0:07:57"],["4","P\u00f4le Universitaire","Ch\u00e2teau Driguet","19:00:00","19:52:00","0:52:00","0:07:48"],["4","P\u00f4le Universitaire","Mairie de Chauray","19:30:00","20:13:00","0:43:00","0:06:27"],["4","P\u00f4le Universitaire","Br\u00e8che","20:01:00","20:18:00","0:17:00","0:02:33"],["4","Mairie de Chauray","P\u00f4le Universitaire","06:31:00","07:11:00","0:40:00","0:06:00"],["4","Mairie de Chauray","P\u00f4le Universitaire","06:46:00","07:26:00","0:40:00","0:06:00"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","07:02:00","07:52:00","0:50:00","0:07:30"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","07:22:00","08:14:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","07:37:00","08:29:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","08:02:00","08:54:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","08:22:00","09:14:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","08:37:00","09:26:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","09:02:00","09:51:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","09:37:00","10:21:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","10:02:00","10:51:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","10:37:00","11:21:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","11:02:00","11:51:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","11:37:00","12:22:00","0:45:00","0:06:45"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","11:52:00","12:42:00","0:50:00","0:07:30"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","12:12:00","12:57:00","0:45:00","0:06:45"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","12:37:00","13:21:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","12:52:00","13:41:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","13:17:00","14:01:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","13:32:00","14:21:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","14:02:00","14:51:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","14:37:00","15:21:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","15:07:00","15:51:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","15:32:00","16:24:00","0:52:00","0:07:48"],["4","Mairie de Chauray","P\u00f4le Universitaire","16:10:00","16:54:00","0:44:00","0:06:36"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","16:22:00","17:14:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","16:37:00","17:29:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","17:02:00","17:54:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","17:22:00","18:14:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","17:42:00","18:29:00","0:47:00","0:07:03"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","18:02:00","18:54:00","0:52:00","0:07:48"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","18:27:00","19:14:00","0:47:00","0:07:03"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","18:52:00","19:41:00","0:49:00","0:07:21"],["4","Ch\u00e2teau Driguet","P\u00f4le Universitaire","19:23:00","20:11:00","0:48:00","0:07:12"],["4","Ch\u00e2teau Driguet","Br\u00e8che","19:58:00","20:23:00","0:25:00","0:03:45"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"4","marker":{"color":"#7f0ca2","pattern":{"shape":""}},"name":"4","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"QB0qAEAdKgCgBysAoAcrAADyKwDgMikA4IUwAADyKwCAmy8AAPIrAICbLwAA8isAgJsvAADyKwCAmy8AgJsvAKAHKwAgXicAILEuAKAHKwCgBysAILEuAGDcLADghTAA4IUwAOCFMADghTAA4IUwAOCFMADghTAA4IUwAOCFMACAmy8AIF4nAGCQDwAAnyQAAJ8kAMDGLQCAmy8AgJsvAICbLwCAmy8AYNwsAGDcLACASCgAYNwsAIBIKABg3CwA4DIpAMDGLQDgMikAgEgoAGDcLACASCgAYNwsAGDcLACASCgAgEgoAICbLwCASCgAgJsvAICbLwCAmy8AgJsvAKAHKwCAmy8AoAcrAGDcLAAA8isAYOMWAA=="},"xaxis":"x","y":["4A","4B","4C","4D","4E","4A","4F","4B","4D","4E","4F","4B","4D","4E","4A","4F","4B","4C","4D","4A","4F","4B","4D","4A","4C","4F","4E","4B","4D","4A","4C","4F","4E","4B","4D","4C","4D","4E","4A","4F","4B","4C","4D","4E","4F","4B","4D","4E","4F","4B","4C","4D","4E","4A","4F","4B","4D","4A","4F","4E","4B","4D","4A","4C","4F","4E","4B","4D","4C","4E"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:33:00.000000000","1900-01-01T06:53:00.000000000","1900-01-01T07:13:00.000000000","1900-01-01T07:33:00.000000000","1900-01-01T07:53:00.000000000","1900-01-01T08:13:00.000000000","1900-01-01T08:33:00.000000000","1900-01-01T08:53:00.000000000","1900-01-01T09:18:00.000000000","1900-01-01T09:43:00.000000000","1900-01-01T10:03:00.000000000","1900-01-01T10:43:00.000000000","1900-01-01T11:13:00.000000000","1900-01-01T11:43:00.000000000","1900-01-01T12:03:00.000000000","1900-01-01T12:23:00.000000000","1900-01-01T12:43:00.000000000","1900-01-01T13:08:00.000000000","1900-01-01T13:28:00.000000000","1900-01-01T13:53:00.000000000","1900-01-01T14:23:00.000000000","1900-01-01T14:53:00.000000000","1900-01-01T15:23:00.000000000","1900-01-01T15:48:00.000000000","1900-01-01T16:13:00.000000000","1900-01-01T16:28:00.000000000","1900-01-01T16:48:00.000000000","1900-01-01T17:08:00.000000000","1900-01-01T17:28:00.000000000","1900-01-01T17:48:00.000000000","1900-01-01T18:13:00.000000000","1900-01-01T18:33:00.000000000","1900-01-01T18:53:00.000000000","1900-01-01T19:23:00.000000000","1900-01-01T19:43:00.000000000","1900-01-01T06:29:00.000000000","1900-01-01T06:43:00.000000000","1900-01-01T07:03:00.000000000","1900-01-01T07:23:00.000000000","1900-01-01T07:43:00.000000000","1900-01-01T08:02:00.000000000","1900-01-01T08:27:00.000000000","1900-01-01T08:58:00.000000000","1900-01-01T09:18:00.000000000","1900-01-01T09:42:00.000000000","1900-01-01T10:23:00.000000000","1900-01-01T10:48:00.000000000","1900-01-01T11:18:00.000000000","1900-01-01T11:32:00.000000000","1900-01-01T11:58:00.000000000","1900-01-01T12:17:00.000000000","1900-01-01T12:38:00.000000000","1900-01-01T12:58:00.000000000","1900-01-01T13:18:00.000000000","1900-01-01T13:39:00.000000000","1900-01-01T14:03:00.000000000","1900-01-01T14:39:00.000000000","1900-01-01T15:08:00.000000000","1900-01-01T15:38:00.000000000","1900-01-01T15:58:00.000000000","1900-01-01T16:18:00.000000000","1900-01-01T16:37:00.000000000","1900-01-01T17:03:00.000000000","1900-01-01T17:22:00.000000000","1900-01-01T17:42:00.000000000","1900-01-01T18:02:00.000000000","1900-01-01T18:22:00.000000000","1900-01-01T18:48:00.000000000","1900-01-01T19:12:00.000000000","1900-01-01T19:32:00.000000000"],"customdata":[["5","Brizeaux \u2013 CAF","La Roussille ITEP","06:33:00","07:18:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","06:53:00","07:38:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","07:13:00","07:58:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","07:33:00","08:18:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","07:53:00","08:31:00","0:38:00","0:05:42"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","08:13:00","08:51:00","0:38:00","0:05:42"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","08:33:00","09:11:00","0:38:00","0:05:42"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","08:53:00","09:38:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","09:18:00","09:55:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","09:43:00","10:20:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","10:03:00","10:40:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","10:43:00","11:28:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","11:13:00","11:50:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","11:43:00","12:28:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","12:03:00","12:48:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","12:23:00","13:08:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","12:43:00","13:20:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","13:08:00","13:53:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","13:28:00","14:05:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","13:53:00","14:30:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","14:23:00","15:00:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","14:53:00","15:30:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","15:23:00","16:00:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","15:48:00","16:34:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","16:13:00","16:51:00","0:38:00","0:05:42"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","16:28:00","17:14:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","16:48:00","17:34:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","17:08:00","17:54:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","17:28:00","18:14:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","17:48:00","18:26:00","0:38:00","0:05:42"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","18:13:00","18:59:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","18:33:00","19:19:00","0:46:00","0:06:54"],["5","Brizeaux \u2013 CAF","La Roussille ITEP","18:53:00","19:38:00","0:45:00","0:06:45"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","19:23:00","20:00:00","0:37:00","0:05:33"],["5","Brizeaux \u2013 CAF","Saint-Liguaire","19:43:00","20:20:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","06:29:00","07:05:00","0:36:00","0:05:24"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","06:43:00","07:25:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","07:03:00","07:45:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","07:23:00","08:05:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","07:43:00","08:25:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","08:02:00","08:45:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","08:27:00","09:10:00","0:43:00","0:06:27"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","08:58:00","09:35:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","09:18:00","09:55:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","09:42:00","10:25:00","0:43:00","0:06:27"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","10:23:00","11:00:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","10:48:00","11:25:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","11:18:00","11:55:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","11:32:00","12:15:00","0:43:00","0:06:27"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","11:58:00","12:35:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","12:17:00","13:00:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","12:38:00","13:20:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","12:58:00","13:40:00","0:42:00","0:06:18"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","13:18:00","14:00:00","0:42:00","0:06:18"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","13:39:00","14:15:00","0:36:00","0:05:24"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","14:03:00","14:45:00","0:42:00","0:06:18"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","14:39:00","15:15:00","0:36:00","0:05:24"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","15:08:00","15:45:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","15:38:00","16:15:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","15:58:00","16:35:00","0:37:00","0:05:33"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","16:18:00","16:55:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","16:37:00","17:20:00","0:43:00","0:06:27"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","17:03:00","17:40:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","17:22:00","18:05:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","17:42:00","18:25:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","18:02:00","18:45:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","18:22:00","19:05:00","0:43:00","0:06:27"],["5","Saint-Liguaire","Brizeaux \u2013 CAF","18:48:00","19:25:00","0:37:00","0:05:33"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","19:12:00","19:55:00","0:43:00","0:06:27"],["5","La Roussille ITEP","Brizeaux \u2013 CAF","19:32:00","20:15:00","0:43:00","0:06:27"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"5","marker":{"color":"#ff9100","pattern":{"shape":""}},"name":"5","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"4DIpAOAyKQDgMikA4DIpAEDKIgBAyiIAQMoiAOAyKQDg3yEA4N8hAODfIQDgMikA4N8hAOAyKQDgMikA4DIpAODfIQDgMikA4N8hAODfIQDg3yEA4N8hAODfIQBAHSoAQMoiAEAdKgBAHSoAQB0qAEAdKgBAyiIAQB0qAEAdKgDgMikA4N8hAODfIQCA9SAAwHMmAMBzJgDAcyYAwHMmACBeJwAgXicA4N8hAODfIQAgXicA4N8hAODfIQDg3yEAIF4nAODfIQAgXicAwHMmAMBzJgDAcyYAgPUgAMBzJgCA9SAA4N8hAODfIQDg3yEA4N8hACBeJwDg3yEAIF4nACBeJwAgXicAIF4nAODfIQAgXicAIF4nAA=="},"xaxis":"x","y":["5A","5B","5C","5D","5E","5A","5B","5C","5D","5A","5B","5C","5A","5B","5D","5C","5A","5E","5B","5D","5A","5E","5D","5A","5B","5E","5C","5D","5A","5B","5E","5C","5D","5A","5B","5C","5D","5E","5A","5B","5C","5D","5A","5B","5C","5A","5B","5D","5C","5A","5E","5B","5D","5C","5A","5E","5D","5A","5E","5C","5D","5A","5B","5E","5C","5D","5A","5B","5E","5C"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:43:00.000000000","1900-01-01T07:16:00.000000000","1900-01-01T07:39:00.000000000","1900-01-01T08:14:00.000000000","1900-01-01T08:33:00.000000000","1900-01-01T09:10:00.000000000","1900-01-01T09:36:00.000000000","1900-01-01T10:11:00.000000000","1900-01-01T10:46:00.000000000","1900-01-01T11:16:00.000000000","1900-01-01T11:56:00.000000000","1900-01-01T12:24:00.000000000","1900-01-01T12:21:00.000000000","1900-01-01T12:47:00.000000000","1900-01-01T13:17:00.000000000","1900-01-01T13:42:00.000000000","1900-01-01T14:17:00.000000000","1900-01-01T14:57:00.000000000","1900-01-01T15:35:00.000000000","1900-01-01T16:04:00.000000000","1900-01-01T16:38:00.000000000","1900-01-01T16:53:00.000000000","1900-01-01T17:32:00.000000000","1900-01-01T17:55:00.000000000","1900-01-01T17:57:00.000000000","1900-01-01T18:23:00.000000000","1900-01-01T18:56:00.000000000","1900-01-01T19:27:00.000000000","1900-01-01T06:50:00.000000000","1900-01-01T07:30:00.000000000","1900-01-01T07:35:00.000000000","1900-01-01T07:13:00.000000000","1900-01-01T07:33:00.000000000","1900-01-01T08:13:00.000000000","1900-01-01T08:38:00.000000000","1900-01-01T09:24:00.000000000","1900-01-01T09:59:00.000000000","1900-01-01T10:29:00.000000000","1900-01-01T11:09:00.000000000","1900-01-01T11:44:00.000000000","1900-01-01T12:12:00.000000000","1900-01-01T12:48:00.000000000","1900-01-01T13:17:00.000000000","1900-01-01T13:42:00.000000000","1900-01-01T14:09:00.000000000","1900-01-01T14:38:00.000000000","1900-01-01T15:14:00.000000000","1900-01-01T15:44:00.000000000","1900-01-01T16:04:00.000000000","1900-01-01T16:33:00.000000000","1900-01-01T16:58:00.000000000","1900-01-01T17:29:00.000000000","1900-01-01T17:53:00.000000000","1900-01-01T18:34:00.000000000","1900-01-01T18:58:00.000000000","1900-01-01T19:24:00.000000000"],"customdata":[["6","Chaintre Br\u00fbl\u00e9e","Combes","06:43:00","07:28:00","0:45:00","0:06:45"],["6","Chaintre Br\u00fbl\u00e9e","Combes","07:16:00","08:04:00","0:48:00","0:07:12"],["6","Chaintre Br\u00fbl\u00e9e","Combes","07:39:00","08:29:00","0:50:00","0:07:30"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","08:14:00","08:58:00","0:44:00","0:06:36"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","08:33:00","09:18:00","0:45:00","0:06:45"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","09:10:00","09:53:00","0:43:00","0:06:27"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","09:36:00","10:18:00","0:42:00","0:06:18"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","10:11:00","10:53:00","0:42:00","0:06:18"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","10:46:00","11:29:00","0:43:00","0:06:27"],["6","Chaintre Br\u00fbl\u00e9e","Combes","11:16:00","12:05:00","0:49:00","0:07:21"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","11:56:00","12:39:00","0:43:00","0:06:27"],["6","Thomas-Jean Main","Br\u00e8che","12:24:00","12:38:00","0:14:00","0:02:06"],["6","Chaintre Br\u00fbl\u00e9e","Combes","12:21:00","13:10:00","0:49:00","0:07:21"],["6","Chaintre Br\u00fbl\u00e9e","Combes","12:47:00","13:35:00","0:48:00","0:07:12"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","13:17:00","13:58:00","0:41:00","0:06:09"],["6","Chaintre Br\u00fbl\u00e9e","Combes","13:42:00","14:29:00","0:47:00","0:07:03"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","14:17:00","14:59:00","0:42:00","0:06:18"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","14:57:00","15:39:00","0:42:00","0:06:18"],["6","Chaintre Br\u00fbl\u00e9e","Combes","15:35:00","16:25:00","0:50:00","0:07:30"],["6","Chaintre Br\u00fbl\u00e9e","Combes","16:04:00","16:56:00","0:52:00","0:07:48"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","16:38:00","17:25:00","0:47:00","0:07:03"],["6","Chaintre Br\u00fbl\u00e9e","Combes","16:53:00","17:46:00","0:53:00","0:07:57"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","17:32:00","18:20:00","0:48:00","0:07:12"],["6","Thomas-Jean Main","Br\u00e8che","17:55:00","18:13:00","0:18:00","0:02:42"],["6","Chaintre Br\u00fbl\u00e9e","Combes","17:57:00","18:50:00","0:53:00","0:07:57"],["6","Chaintre Br\u00fbl\u00e9e","Combes","18:23:00","19:15:00","0:52:00","0:07:48"],["6","Chaintre Br\u00fbl\u00e9e","Combes","18:56:00","19:44:00","0:48:00","0:07:12"],["6","Chaintre Br\u00fbl\u00e9e","Maisons Rouges","19:27:00","20:07:00","0:40:00","0:06:00"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","06:50:00","07:29:00","0:39:00","0:05:51"],["6","Br\u00e8che","Thomas-Jean Main","07:30:00","07:44:00","0:14:00","0:02:06"],["6","Br\u00e8che","Thomas-Jean Main","07:35:00","07:49:00","0:14:00","0:02:06"],["6","Combes","Chaintre Br\u00fbl\u00e9e","07:13:00","08:02:00","0:49:00","0:07:21"],["6","Combes","Chaintre Br\u00fbl\u00e9e","07:33:00","08:24:00","0:51:00","0:07:39"],["6","Combes","Chaintre Br\u00fbl\u00e9e","08:13:00","09:04:00","0:51:00","0:07:39"],["6","Combes","Chaintre Br\u00fbl\u00e9e","08:38:00","09:27:00","0:49:00","0:07:21"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","09:24:00","10:04:00","0:40:00","0:06:00"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","09:59:00","10:39:00","0:40:00","0:06:00"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","10:29:00","11:09:00","0:40:00","0:06:00"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","11:09:00","11:50:00","0:41:00","0:06:09"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","11:44:00","12:27:00","0:43:00","0:06:27"],["6","Combes","Chaintre Br\u00fbl\u00e9e","12:12:00","13:00:00","0:48:00","0:07:12"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","12:48:00","13:29:00","0:41:00","0:06:09"],["6","Combes","Chaintre Br\u00fbl\u00e9e","13:17:00","14:05:00","0:48:00","0:07:12"],["6","Combes","Chaintre Br\u00fbl\u00e9e","13:42:00","14:30:00","0:48:00","0:07:12"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","14:09:00","14:50:00","0:41:00","0:06:09"],["6","Combes","Chaintre Br\u00fbl\u00e9e","14:38:00","15:26:00","0:48:00","0:07:12"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","15:14:00","15:56:00","0:42:00","0:06:18"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","15:44:00","16:29:00","0:45:00","0:06:45"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","16:04:00","16:50:00","0:46:00","0:06:54"],["6","Combes","Chaintre Br\u00fbl\u00e9e","16:33:00","17:25:00","0:52:00","0:07:48"],["6","Combes","Chaintre Br\u00fbl\u00e9e","16:58:00","17:50:00","0:52:00","0:07:48"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","17:29:00","18:15:00","0:46:00","0:06:54"],["6","Combes","Chaintre Br\u00fbl\u00e9e","17:53:00","18:45:00","0:52:00","0:07:48"],["6","Maisons Rouges","Chaintre Br\u00fbl\u00e9e","18:34:00","19:18:00","0:44:00","0:06:36"],["6","Combes","Chaintre Br\u00fbl\u00e9e","18:58:00","19:44:00","0:46:00","0:06:54"],["6","Combes","Chaintre Br\u00fbl\u00e9e","19:24:00","20:09:00","0:45:00","0:06:45"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"6","marker":{"color":"#ffcc00","pattern":{"shape":""}},"name":"6","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"4DIpAADyKwDAxi0AgEgoAOAyKQAgXicAwHMmAMBzJgAgXicAYNwsACBeJwBA0QwAYNwsAADyKwBgiSUAoAcrAMBzJgDAcyYAwMYtAICbLwCgBysA4IUwAADyKwDAehAA4IUwAICbLwAA8isAAJ8kAKC0IwBA0QwAQNEMAGDcLAAgsS4AILEuAGDcLAAAnyQAAJ8kAACfJABgiSUAIF4nAADyKwBgiSUAAPIrAADyKwBgiSUAAPIrAMBzJgDgMikAQB0qAICbLwCAmy8AQB0qAICbLwCASCgAQB0qAOAyKQA="},"xaxis":"x","y":["6A","6B","6C","6D","6A","6B","6C","6A","6B","6C","6A","3D","6D","6B","6C","6A","6D","6C","6A","6D","6C","6B","6A","3C","6D","6C","6B","6A","6C","3B","3C","6D","6A","6B","6C","6A","6B","6C","6A","6B","6C","6A","6D","6B","6C","6A","6D","6C","6B","6A","6D","6C","6B","6A","6D","6C"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T07:15:00.000000000","1900-01-01T07:45:00.000000000","1900-01-01T08:19:00.000000000","1900-01-01T08:50:00.000000000","1900-01-01T09:00:00.000000000","1900-01-01T09:26:00.000000000","1900-01-01T09:50:00.000000000","1900-01-01T10:14:00.000000000","1900-01-01T11:02:00.000000000","1900-01-01T11:50:00.000000000","1900-01-01T12:38:00.000000000","1900-01-01T13:26:00.000000000","1900-01-01T14:05:00.000000000","1900-01-01T14:53:00.000000000","1900-01-01T15:41:00.000000000","1900-01-01T16:08:00.000000000","1900-01-01T16:38:00.000000000","1900-01-01T17:12:00.000000000","1900-01-01T17:45:00.000000000","1900-01-01T18:25:00.000000000","1900-01-01T18:57:00.000000000","1900-01-01T19:29:00.000000000","1900-01-01T19:56:00.000000000","1900-01-01T06:47:00.000000000","1900-01-01T07:17:00.000000000","1900-01-01T07:47:00.000000000","1900-01-01T08:19:00.000000000","1900-01-01T08:54:00.000000000","1900-01-01T09:22:00.000000000","1900-01-01T09:51:00.000000000","1900-01-01T10:39:00.000000000","1900-01-01T11:27:00.000000000","1900-01-01T12:15:00.000000000","1900-01-01T13:08:00.000000000","1900-01-01T13:42:00.000000000","1900-01-01T14:30:00.000000000","1900-01-01T15:18:00.000000000","1900-01-01T15:44:00.000000000","1900-01-01T16:14:00.000000000","1900-01-01T16:39:00.000000000","1900-01-01T17:10:00.000000000","1900-01-01T17:46:00.000000000","1900-01-01T18:25:00.000000000","1900-01-01T19:00:00.000000000","1900-01-01T19:28:00.000000000","1900-01-01T19:57:00.000000000"],"customdata":[["7","Maisons Rouges","Gare de Niort","07:15:00","07:41:00","0:26:00","0:03:54"],["7","Maisons Rouges","Gare de Niort","07:45:00","08:13:00","0:28:00","0:04:12"],["7","Maisons Rouges","Gare de Niort","08:19:00","08:47:00","0:28:00","0:04:12"],["7","Maisons Rouges","Gare de Niort","08:50:00","09:17:00","0:27:00","0:04:03"],["7","Maisons Rouges","P\u00f4le Atlantique","09:00:00","09:21:00","0:21:00","0:03:09"],["7","Maisons Rouges","P\u00f4le Atlantique","09:26:00","09:46:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","09:50:00","10:10:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","10:14:00","10:34:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","11:02:00","11:22:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","11:50:00","12:10:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","12:38:00","12:58:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","13:26:00","13:46:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","14:05:00","14:25:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","14:53:00","15:13:00","0:20:00","0:03:00"],["7","Maisons Rouges","P\u00f4le Atlantique","15:41:00","16:01:00","0:20:00","0:03:00"],["7","Maisons Rouges","Gare de Niort","16:08:00","16:34:00","0:26:00","0:03:54"],["7","Maisons Rouges","Gare de Niort","16:38:00","17:05:00","0:27:00","0:04:03"],["7","Maisons Rouges","Gare de Niort","17:12:00","17:40:00","0:28:00","0:04:12"],["7","Maisons Rouges","Gare de Niort","17:45:00","18:13:00","0:28:00","0:04:12"],["7","Maisons Rouges","Gare de Niort","18:25:00","18:52:00","0:27:00","0:04:03"],["7","Maisons Rouges","Gare de Niort","18:57:00","19:22:00","0:25:00","0:03:45"],["7","Maisons Rouges","Gare de Niort","19:29:00","19:53:00","0:24:00","0:03:36"],["7","Maisons Rouges","P\u00f4le Atlantique","19:56:00","20:14:00","0:18:00","0:02:42"],["7","Gare de Niort","Maisons Rouges","06:47:00","07:11:00","0:24:00","0:03:36"],["7","Gare de Niort","Maisons Rouges","07:17:00","07:42:00","0:25:00","0:03:45"],["7","Gare de Niort","Maisons Rouges","07:47:00","08:13:00","0:26:00","0:03:54"],["7","Gare de Niort","Maisons Rouges","08:19:00","08:46:00","0:27:00","0:04:03"],["7","Gare de Niort","Maisons Rouges","08:54:00","09:21:00","0:27:00","0:04:03"],["7","Gare de Niort","Maisons Rouges","09:22:00","09:49:00","0:27:00","0:04:03"],["7","P\u00f4le Atlantique","Maisons Rouges","09:51:00","10:11:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","10:39:00","10:59:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","11:27:00","11:47:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","12:15:00","12:35:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","13:08:00","13:28:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","13:42:00","14:02:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","14:30:00","14:50:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","15:18:00","15:38:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","15:44:00","16:04:00","0:20:00","0:03:00"],["7","P\u00f4le Atlantique","Maisons Rouges","16:14:00","16:34:00","0:20:00","0:03:00"],["7","Gare de Niort","Maisons Rouges","16:39:00","17:08:00","0:29:00","0:04:21"],["7","Gare de Niort","Maisons Rouges","17:10:00","17:43:00","0:33:00","0:04:57"],["7","Gare de Niort","Maisons Rouges","17:46:00","18:17:00","0:31:00","0:04:39"],["7","Gare de Niort","Maisons Rouges","18:25:00","18:52:00","0:27:00","0:04:03"],["7","Gare de Niort","Maisons Rouges","19:00:00","19:26:00","0:26:00","0:03:54"],["7","Gare de Niort","Maisons Rouges","19:28:00","19:52:00","0:24:00","0:03:36"],["7","Gare de Niort","P\u00f4le Universitaire","19:57:00","20:08:00","0:11:00","0:01:39"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"7","marker":{"color":"#f21392","pattern":{"shape":""}},"name":"7","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"wM0XAICiGQCAohkAILgYAOA5EwCATxIAgE8SAIBPEgCATxIAgE8SAIBPEgCATxIAgE8SAIBPEgCATxIAwM0XACC4GACAohkAgKIZACC4GABg4xYAAPkVAMB6EAAA+RUAYOMWAMDNFwAguBgAILgYACC4GACATxIAgE8SAIBPEgCATxIAgE8SAIBPEgCATxIAgE8SAIBPEgCATxIA4IwaAGA2HgCgYRwAILgYAMDNFwAA+RUAIBIKAA=="},"xaxis":"x","y":["7A","7B","7A","7B","6D","7A","7B","7A","7A","7A","7A","14A","7A","7A","7A","7B","7A","7B","7A","7B","7A","7B","7A","7A","7B","7A","7B","7A","7B","7A","7A","7A","7A","13B","7A","7A","7A","7B","7A","7B","7A","7B","7A","7B","7A","7B"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:49:00.000000000","1900-01-01T07:27:00.000000000","1900-01-01T07:47:00.000000000","1900-01-01T08:17:00.000000000","1900-01-01T08:54:00.000000000","1900-01-01T09:34:00.000000000","1900-01-01T10:24:00.000000000","1900-01-01T11:04:00.000000000","1900-01-01T11:53:00.000000000","1900-01-01T12:44:00.000000000","1900-01-01T13:04:00.000000000","1900-01-01T13:44:00.000000000","1900-01-01T14:34:00.000000000","1900-01-01T15:19:00.000000000","1900-01-01T16:02:00.000000000","1900-01-01T16:37:00.000000000","1900-01-01T17:07:00.000000000","1900-01-01T17:37:00.000000000","1900-01-01T18:07:00.000000000","1900-01-01T18:33:00.000000000","1900-01-01T19:04:00.000000000","1900-01-01T19:34:00.000000000","1900-01-01T07:05:00.000000000","1900-01-01T07:35:00.000000000","1900-01-01T08:10:00.000000000","1900-01-01T08:50:00.000000000","1900-01-01T09:35:00.000000000","1900-01-01T10:20:00.000000000","1900-01-01T11:05:00.000000000","1900-01-01T12:00:00.000000000","1900-01-01T12:20:00.000000000","1900-01-01T12:50:00.000000000","1900-01-01T13:20:00.000000000","1900-01-01T13:50:00.000000000","1900-01-01T14:35:00.000000000","1900-01-01T15:20:00.000000000","1900-01-01T15:50:00.000000000","1900-01-01T16:20:00.000000000","1900-01-01T16:50:00.000000000","1900-01-01T17:20:00.000000000","1900-01-01T17:50:00.000000000","1900-01-01T18:20:00.000000000","1900-01-01T18:50:00.000000000","1900-01-01T19:20:00.000000000"],"customdata":[["10","Mairie d\u2019Aiffres","Br\u00e8che","06:49:00","07:23:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","07:27:00","08:03:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","07:47:00","08:23:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","08:17:00","08:53:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","08:54:00","09:28:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","09:34:00","10:08:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","10:24:00","10:58:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","11:04:00","11:38:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","11:53:00","12:28:00","0:35:00","0:05:15"],["10","Mairie d\u2019Aiffres","Br\u00e8che","12:44:00","13:18:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","13:04:00","13:38:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","13:44:00","14:18:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","14:34:00","15:08:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","15:19:00","15:53:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","16:02:00","16:38:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","16:37:00","17:13:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","17:07:00","17:43:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","17:37:00","18:13:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","18:07:00","18:43:00","0:36:00","0:05:24"],["10","Mairie d\u2019Aiffres","Br\u00e8che","18:33:00","19:08:00","0:35:00","0:05:15"],["10","Mairie d\u2019Aiffres","Br\u00e8che","19:04:00","19:38:00","0:34:00","0:05:06"],["10","Mairie d\u2019Aiffres","Br\u00e8che","19:34:00","20:08:00","0:34:00","0:05:06"],["10","Br\u00e8che","Mairie d\u2019Aiffres","07:05:00","07:40:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","07:35:00","08:11:00","0:36:00","0:05:24"],["10","Br\u00e8che","Mairie d\u2019Aiffres","08:10:00","08:46:00","0:36:00","0:05:24"],["10","Br\u00e8che","Mairie d\u2019Aiffres","08:50:00","09:26:00","0:36:00","0:05:24"],["10","Br\u00e8che","Mairie d\u2019Aiffres","09:35:00","10:10:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","10:20:00","10:55:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","11:05:00","11:40:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","12:00:00","12:35:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","12:20:00","12:55:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","12:50:00","13:25:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","13:20:00","13:55:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","13:50:00","14:25:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","14:35:00","15:10:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","15:20:00","15:55:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","15:50:00","16:25:00","0:35:00","0:05:15"],["10","Br\u00e8che","Mairie d\u2019Aiffres","16:20:00","16:56:00","0:36:00","0:05:24"],["10","Br\u00e8che","Mairie d\u2019Aiffres","16:50:00","17:27:00","0:37:00","0:05:33"],["10","Br\u00e8che","Mairie d\u2019Aiffres","17:20:00","17:57:00","0:37:00","0:05:33"],["10","Br\u00e8che","Mairie d\u2019Aiffres","17:50:00","18:27:00","0:37:00","0:05:33"],["10","Br\u00e8che","Mairie d\u2019Aiffres","18:20:00","18:57:00","0:37:00","0:05:33"],["10","Br\u00e8che","Mairie d\u2019Aiffres","18:50:00","19:26:00","0:36:00","0:05:24"],["10","Br\u00e8che","Mairie d\u2019Aiffres","19:20:00","19:55:00","0:35:00","0:05:15"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"10","marker":{"color":"#058ee5","pattern":{"shape":""}},"name":"10","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"wCAfAID1IACA9SAAgPUgAMAgHwDAIB8AwCAfAMAgHwAgCyAAwCAfAMAgHwDAIB8AwCAfAMAgHwCA9SAAgPUgAID1IACA9SAAgPUgACALIADAIB8AwCAfACALIACA9SAAgPUgAID1IAAgCyAAIAsgACALIAAgCyAAIAsgACALIAAgCyAAIAsgACALIAAgCyAAIAsgAID1IADg3yEA4N8hAODfIQDg3yEAgPUgACALIAA="},"xaxis":"x","y":["10A","10B","10C","10A","10B","10C","10B","10C","10B","10C","10A","10B","10A","10B","10A","10C","10B","10A","10C","10B","10A","10C","10C","10A","10B","10C","10B","10C","10B","10C","10A","10B","10C","10A","10B","10A","10C","10B","10A","10C","10B","10A","10C","10B"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:42:00.000000000","1900-01-01T07:07:00.000000000","1900-01-01T07:32:00.000000000","1900-01-01T08:12:00.000000000","1900-01-01T08:57:00.000000000","1900-01-01T09:42:00.000000000","1900-01-01T10:27:00.000000000","1900-01-01T11:12:00.000000000","1900-01-01T11:42:00.000000000","1900-01-01T12:12:00.000000000","1900-01-01T12:57:00.000000000","1900-01-01T13:42:00.000000000","1900-01-01T14:27:00.000000000","1900-01-01T15:12:00.000000000","1900-01-01T15:57:00.000000000","1900-01-01T16:42:00.000000000","1900-01-01T17:12:00.000000000","1900-01-01T17:42:00.000000000","1900-01-01T18:12:00.000000000","1900-01-01T18:42:00.000000000","1900-01-01T19:12:00.000000000","1900-01-01T06:46:00.000000000","1900-01-01T07:26:00.000000000","1900-01-01T07:51:00.000000000","1900-01-01T08:16:00.000000000","1900-01-01T09:01:00.000000000","1900-01-01T09:41:00.000000000","1900-01-01T10:26:00.000000000","1900-01-01T11:11:00.000000000","1900-01-01T11:56:00.000000000","1900-01-01T12:26:00.000000000","1900-01-01T12:56:00.000000000","1900-01-01T13:41:00.000000000","1900-01-01T14:26:00.000000000","1900-01-01T15:11:00.000000000","1900-01-01T15:56:00.000000000","1900-01-01T16:26:00.000000000","1900-01-01T16:56:00.000000000","1900-01-01T17:26:00.000000000","1900-01-01T17:56:00.000000000","1900-01-01T18:26:00.000000000","1900-01-01T18:56:00.000000000","1900-01-01T19:26:00.000000000"],"customdata":[["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","06:42:00","07:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","07:07:00","07:46:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","07:32:00","08:11:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","08:12:00","08:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","08:57:00","09:36:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","09:42:00","10:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","10:27:00","11:06:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","11:12:00","11:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","11:42:00","12:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","12:12:00","12:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","12:57:00","13:36:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","13:42:00","14:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","14:27:00","15:06:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","15:12:00","15:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","15:57:00","16:36:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","16:42:00","17:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","17:12:00","17:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","17:42:00","18:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","18:12:00","18:51:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","18:42:00","19:21:00","0:39:00","0:05:51"],["11","Surimeau","Lyc\u00e9e Paul Gu\u00e9rin","19:12:00","19:51:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","06:46:00","07:25:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","07:26:00","08:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","07:51:00","08:30:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","08:16:00","08:55:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","09:01:00","09:40:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","09:41:00","10:20:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","10:26:00","11:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","11:11:00","11:50:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","11:56:00","12:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","12:26:00","13:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","12:56:00","13:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","13:41:00","14:20:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","14:26:00","15:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","15:11:00","15:50:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","15:56:00","16:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","16:26:00","17:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","16:56:00","17:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","17:26:00","18:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","17:56:00","18:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","18:26:00","19:05:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","18:56:00","19:35:00","0:39:00","0:05:51"],["11","Lyc\u00e9e Paul Gu\u00e9rin","Surimeau","19:26:00","20:05:00","0:39:00","0:05:51"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"11","marker":{"color":"#7e501f","pattern":{"shape":""}},"name":"11","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"oLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAKC0IwCgtCMAoLQjAA=="},"xaxis":"x","y":["11A","11B","11C","11A","11C","11A","11C","11A","11B","11C","11A","11C","11A","11C","11A","11C","11B","11A","11C","11B","11A","11C","11A","11B","11C","11A","11C","11A","11C","11A","11B","11C","11A","11C","11A","11C","11B","11A","11C","11B","11A","11C","11B"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T06:56:00.000000000","1900-01-01T07:37:00.000000000","1900-01-01T08:11:00.000000000","1900-01-01T08:42:00.000000000","1900-01-01T09:28:00.000000000","1900-01-01T10:13:00.000000000","1900-01-01T11:13:00.000000000","1900-01-01T11:58:00.000000000","1900-01-01T12:24:00.000000000","1900-01-01T12:55:00.000000000","1900-01-01T13:45:00.000000000","1900-01-01T14:35:00.000000000","1900-01-01T15:23:00.000000000","1900-01-01T15:58:00.000000000","1900-01-01T16:32:00.000000000","1900-01-01T17:11:00.000000000","1900-01-01T17:46:00.000000000","1900-01-01T18:22:00.000000000","1900-01-01T18:59:00.000000000","1900-01-01T19:36:00.000000000","1900-01-01T06:45:00.000000000","1900-01-01T07:15:00.000000000","1900-01-01T07:45:00.000000000","1900-01-01T08:30:00.000000000","1900-01-01T09:15:00.000000000","1900-01-01T10:20:00.000000000","1900-01-01T11:05:00.000000000","1900-01-01T12:05:00.000000000","1900-01-01T12:50:00.000000000","1900-01-01T13:20:00.000000000","1900-01-01T13:45:00.000000000","1900-01-01T14:35:00.000000000","1900-01-01T15:25:00.000000000","1900-01-01T16:15:00.000000000","1900-01-01T16:50:00.000000000","1900-01-01T17:25:00.000000000","1900-01-01T18:05:00.000000000","1900-01-01T18:40:00.000000000","1900-01-01T19:15:00.000000000","1900-01-01T20:10:00.000000000","1900-01-01T19:50:00.000000000"],"customdata":[["12","Sainte-Pezenne","Br\u00e8che","06:56:00","07:38:00","0:42:00","0:06:18"],["12","Sainte-Pezenne","Br\u00e8che","07:37:00","08:23:00","0:46:00","0:06:54"],["12","Sainte-Pezenne","Br\u00e8che","08:11:00","08:58:00","0:47:00","0:07:03"],["12","Sainte-Pezenne","Br\u00e8che","08:42:00","09:28:00","0:46:00","0:06:54"],["12","Sainte-Pezenne","Br\u00e8che","09:28:00","10:13:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","10:13:00","10:58:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","11:13:00","11:58:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","11:58:00","12:43:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","12:24:00","13:08:00","0:44:00","0:06:36"],["12","Sainte-Pezenne","Br\u00e8che","12:55:00","13:38:00","0:43:00","0:06:27"],["12","Sainte-Pezenne","Br\u00e8che","13:45:00","14:28:00","0:43:00","0:06:27"],["12","Sainte-Pezenne","Br\u00e8che","14:35:00","15:18:00","0:43:00","0:06:27"],["12","Sainte-Pezenne","Br\u00e8che","15:23:00","16:08:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","15:58:00","16:43:00","0:45:00","0:06:45"],["12","Sainte-Pezenne","Br\u00e8che","16:32:00","17:18:00","0:46:00","0:06:54"],["12","Sainte-Pezenne","Br\u00e8che","17:11:00","17:58:00","0:47:00","0:07:03"],["12","Sainte-Pezenne","Br\u00e8che","17:46:00","18:33:00","0:47:00","0:07:03"],["12","Sainte-Pezenne","Br\u00e8che","18:22:00","19:08:00","0:46:00","0:06:54"],["12","Sainte-Pezenne","Br\u00e8che","18:59:00","19:43:00","0:44:00","0:06:36"],["12","Sainte-Pezenne","P\u00f4le Atlantique","19:36:00","20:00:00","0:24:00","0:03:36"],["12","Br\u00e8che","Sainte-Pezenne","06:45:00","07:27:00","0:42:00","0:06:18"],["12","Br\u00e8che","Sainte-Pezenne","07:15:00","07:57:00","0:42:00","0:06:18"],["12","Br\u00e8che","Sainte-Pezenne","07:45:00","08:29:00","0:44:00","0:06:36"],["12","Br\u00e8che","Sainte-Pezenne","08:30:00","09:14:00","0:44:00","0:06:36"],["12","Br\u00e8che","Sainte-Pezenne","09:15:00","09:58:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","10:20:00","11:03:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","11:05:00","11:48:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","12:05:00","12:48:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","12:50:00","13:33:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","13:20:00","14:03:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","13:45:00","14:28:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","14:35:00","15:18:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","15:25:00","16:08:00","0:43:00","0:06:27"],["12","Br\u00e8che","Sainte-Pezenne","16:15:00","16:59:00","0:44:00","0:06:36"],["12","Br\u00e8che","Sainte-Pezenne","16:50:00","17:36:00","0:46:00","0:06:54"],["12","Br\u00e8che","Sainte-Pezenne","17:25:00","18:11:00","0:46:00","0:06:54"],["12","Br\u00e8che","Sainte-Pezenne","18:05:00","18:49:00","0:44:00","0:06:36"],["12","Br\u00e8che","Sainte-Pezenne","18:40:00","19:24:00","0:44:00","0:06:36"],["12","Br\u00e8che","Sainte-Pezenne","19:15:00","19:57:00","0:42:00","0:06:18"],["12","P\u00f4le Universitaire","Sainte-Pezenne","20:10:00","20:24:00","0:14:00","0:02:06"],["12","Br\u00e8che","P\u00f4le Universitaire","19:50:00","20:18:00","0:28:00","0:04:12"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"12","marker":{"color":"#a70041","pattern":{"shape":""}},"name":"12","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"wHMmAEAdKgCgBysAQB0qAOAyKQDgMikA4DIpAOAyKQCASCgAIF4nACBeJwAgXicA4DIpAOAyKQBAHSoAoAcrAKAHKwBAHSoAgEgoAAD5FQDAcyYAwHMmAIBIKACASCgAIF4nACBeJwAgXicAIF4nACBeJwAgXicAIF4nACBeJwAgXicAgEgoAEAdKgBAHSoAgEgoAIBIKADAcyYAQNEMAICiGQA="},"xaxis":"x","y":["12B","12A","12C","12B","12A","12C","12A","12C","12B","12A","12C","12A","12C","12B","12A","12C","12B","12A","12C","12B","12A","12C","12B","12A","12C","12A","12C","12A","12C","12B","12A","12C","12A","12C","12B","12A","12C","12B","12A","7B","12C"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T07:15:00.000000000","1900-01-01T07:55:00.000000000","1900-01-01T08:50:00.000000000","1900-01-01T09:45:00.000000000","1900-01-01T10:40:00.000000000","1900-01-01T11:35:00.000000000","1900-01-01T12:15:00.000000000","1900-01-01T12:55:00.000000000","1900-01-01T13:50:00.000000000","1900-01-01T14:45:00.000000000","1900-01-01T15:40:00.000000000","1900-01-01T16:35:00.000000000","1900-01-01T17:30:00.000000000","1900-01-01T18:25:00.000000000","1900-01-01T19:20:00.000000000","1900-01-01T07:34:00.000000000","1900-01-01T08:23:00.000000000","1900-01-01T09:18:00.000000000","1900-01-01T10:13:00.000000000","1900-01-01T11:08:00.000000000","1900-01-01T11:54:00.000000000","1900-01-01T12:34:00.000000000","1900-01-01T13:29:00.000000000","1900-01-01T14:18:00.000000000","1900-01-01T15:12:00.000000000","1900-01-01T16:07:00.000000000","1900-01-01T17:01:00.000000000","1900-01-01T17:56:00.000000000","1900-01-01T18:52:00.000000000","1900-01-01T19:39:00.000000000"],"customdata":[["13","Cholette","Maisons Rouges","07:15:00","07:31:00","0:16:00","0:02:24"],["13","Cholette","30 Ormeaux","07:55:00","08:17:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","08:50:00","09:12:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","09:45:00","10:07:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","10:40:00","11:02:00","0:22:00","0:03:18"],["13","Cholette","Maisons Rouges","11:35:00","11:51:00","0:16:00","0:02:24"],["13","Cholette","Maisons Rouges","12:15:00","12:31:00","0:16:00","0:02:24"],["13","Cholette","Maisons Rouges","12:55:00","13:11:00","0:16:00","0:02:24"],["13","Cholette","30 Ormeaux","13:50:00","14:12:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","14:45:00","15:07:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","15:40:00","16:02:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","16:35:00","16:57:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","17:30:00","17:52:00","0:22:00","0:03:18"],["13","Cholette","30 Ormeaux","18:25:00","18:47:00","0:22:00","0:03:18"],["13","Cholette","Maisons Rouges","19:20:00","19:36:00","0:16:00","0:02:24"],["13","Maisons Rouges","Cholette","07:34:00","07:50:00","0:16:00","0:02:24"],["13","30 Ormeaux","Cholette","08:23:00","08:45:00","0:22:00","0:03:18"],["13","30 Ormeaux","Cholette","09:18:00","09:40:00","0:22:00","0:03:18"],["13","30 Ormeaux","Cholette","10:13:00","10:35:00","0:22:00","0:03:18"],["13","30 Ormeaux","Cholette","11:08:00","11:30:00","0:22:00","0:03:18"],["13","Maisons Rouges","Cholette","11:54:00","12:10:00","0:16:00","0:02:24"],["13","Maisons Rouges","Cholette","12:34:00","12:50:00","0:16:00","0:02:24"],["13","Maisons Rouges","Cholette","13:29:00","13:45:00","0:16:00","0:02:24"],["13","30 Ormeaux","Cholette","14:18:00","14:40:00","0:22:00","0:03:18"],["13","30 Ormeaux","Cholette","15:12:00","15:35:00","0:23:00","0:03:27"],["13","30 Ormeaux","Cholette","16:07:00","16:30:00","0:23:00","0:03:27"],["13","30 Ormeaux","Cholette","17:01:00","17:25:00","0:24:00","0:03:36"],["13","30 Ormeaux","Cholette","17:56:00","18:20:00","0:24:00","0:03:36"],["13","30 Ormeaux","Cholette","18:52:00","19:15:00","0:23:00","0:03:27"],["13","Maisons Rouges","Cholette","19:39:00","19:55:00","0:16:00","0:02:24"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"13","marker":{"color":"#bc95f5","pattern":{"shape":""}},"name":"13","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"AKYOAEAkFABAJBQAQCQUAEAkFAAApg4AAKYOAACmDgBAJBQAQCQUAEAkFABAJBQAQCQUAEAkFAAApg4AAKYOAEAkFABAJBQAQCQUAEAkFAAApg4AAKYOAACmDgBAJBQAoA4VAKAOFQAA+RUAAPkVAKAOFQAApg4A"},"xaxis":"x","y":["13A","13A","13A","13A","13A","13A","13A","13A","13B","13B","13B","13B","13B","13B","13B","13A","13A","13A","13A","13A","13A","13A","13B","13B","13B","13B","13B","13B","13B","13B"],"yaxis":"y","type":"bar"},{"base":["1900-01-01T07:30:00.000000000","1900-01-01T08:30:00.000000000","1900-01-01T09:30:00.000000000","1900-01-01T10:30:00.000000000","1900-01-01T11:30:00.000000000","1900-01-01T12:30:00.000000000","1900-01-01T13:30:00.000000000","1900-01-01T14:30:00.000000000","1900-01-01T15:30:00.000000000","1900-01-01T16:30:00.000000000","1900-01-01T17:30:00.000000000","1900-01-01T18:30:00.000000000","1900-01-01T19:30:00.000000000","1900-01-01T07:00:00.000000000","1900-01-01T08:00:00.000000000","1900-01-01T09:00:00.000000000","1900-01-01T10:00:00.000000000","1900-01-01T11:00:00.000000000","1900-01-01T12:00:00.000000000","1900-01-01T13:00:00.000000000","1900-01-01T14:00:00.000000000","1900-01-01T15:00:00.000000000","1900-01-01T16:00:00.000000000","1900-01-01T17:00:00.000000000","1900-01-01T18:00:00.000000000","1900-01-01T19:00:00.000000000"],"customdata":[["14","Maisons Rouges","Terre de Sport","07:30:00","07:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","08:30:00","08:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","09:30:00","09:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","10:30:00","10:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","11:30:00","11:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","12:30:00","12:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","13:30:00","13:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","14:30:00","14:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","15:30:00","15:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","16:30:00","16:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","17:30:00","17:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","18:30:00","18:55:00","0:25:00","0:03:45"],["14","Maisons Rouges","Terre de Sport","19:30:00","19:55:00","0:25:00","0:03:45"],["14","Terre de Sport","Maisons Rouges","07:00:00","07:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","08:00:00","08:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","09:00:00","09:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","10:00:00","10:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","11:00:00","11:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","12:00:00","12:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","13:00:00","13:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","14:00:00","14:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","15:00:00","15:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","16:00:00","16:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","17:00:00","17:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","18:00:00","18:24:00","0:24:00","0:03:36"],["14","Terre de Sport","Maisons Rouges","19:00:00","19:24:00","0:24:00","0:03:36"]],"hovertemplate":"Ligne=%{customdata[0]}\u003cbr\u003eD\u00e9but=%{base}\u003cbr\u003eFin=%{x}\u003cbr\u003eCode Vh=%{y}\u003cbr\u003eArr\u00eat d\u00e9but=%{customdata[1]}\u003cbr\u003eArr\u00eat fin=%{customdata[2]}\u003cbr\u003eHeure d\u00e9but=%{customdata[3]}\u003cbr\u003eHeure fin=%{customdata[4]}\u003cbr\u003eDur\u00e9e=%{customdata[5]}\u003cbr\u003eBattement cible=%{customdata[6]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"14","marker":{"color":"#b9eb2b","pattern":{"shape":""}},"name":"14","orientation":"h","showlegend":true,"textposition":"auto","x":{"dtype":"i4","bdata":"YOMWAGDjFgBg4xYAYOMWAGDjFgBg4xYAYOMWAGDjFgBg4xYAYOMWAGDjFgBg4xYAYOMWAAD5FQAA+RUAAPkVAAD5FQAA+RUAAPkVAAD5FQAA+RUAAPkVAAD5FQAA+RUAAPkVAAD5FQA="},"xaxis":"x","y":["14A","14A","14A","14A","14A","14A","14B","14B","14B","14B","14B","14B","14B","14A","14A","14A","14A","14A","14A","14A","14B","14B","14B","14B","14B","14B"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"type":"date","tickformat":"%H:%M:%S","tickmode":"linear","tick0":"1900-01-01T00:00:00","dtick":3600000,"title":{"text":"Heure"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Code v\u00e9hicule"},"autorange":"reversed"},"legend":{"title":{"text":"Ligne"},"tracegroupgap":0},"title":{"text":"Diagramme de circulation des v\u00e9hicules","font":{"size":18}},"barmode":"overlay","bargap":0.2,"height":1440},                        {"responsive": true}                    )                };            </script>        </div>
+    <h2>⚠️ Battements problématiques</h2>
+    
+<div class='stats-container'>
+    <h3>Statistiques des battements (hors coupures ≥ 60 min)</h3>
+    <table class='stats-table'>
+        <tr>
+            <td><b>Total:</b></td><td>625</td>
+            <td><b>Trop courts:</b></td><td>52 (8.3%)</td>
+            <td><b>Trop longs:</b></td><td>142 (22.7%)</td>
+            <td><b>OK:</b></td><td>431 (69.0%)</td>
+        </tr>
+    </table>
+</div>
+
+    <table border="1" class="dataframe display compact cell-border nowrap" id="table_rapport">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Code Vh</th>
+      <th>Terminus</th>
+      <th>Arrivée</th>
+      <th>Départ</th>
+      <th>Réel</th>
+      <th>Cible</th>
+      <th>Différence</th>
+      <th>% Course</th>
+      <th>Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10A</td>
+      <td>Brèche</td>
+      <td>07:23</td>
+      <td>07:35</td>
+      <td>0:12:00</td>
+      <td>0:05:06</td>
+      <td>+0:06:54</td>
+      <td>35.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>12:55</td>
+      <td>13:04</td>
+      <td>0:09:00</td>
+      <td>0:05:15</td>
+      <td>+0:03:45</td>
+      <td>25.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Brèche</td>
+      <td>13:38</td>
+      <td>13:50</td>
+      <td>0:12:00</td>
+      <td>0:05:06</td>
+      <td>+0:06:54</td>
+      <td>35.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>14:25</td>
+      <td>14:34</td>
+      <td>0:09:00</td>
+      <td>0:05:15</td>
+      <td>+0:03:45</td>
+      <td>25.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Brèche</td>
+      <td>15:08</td>
+      <td>15:20</td>
+      <td>0:12:00</td>
+      <td>0:05:06</td>
+      <td>+0:06:54</td>
+      <td>35.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Brèche</td>
+      <td>16:38</td>
+      <td>16:50</td>
+      <td>0:12:00</td>
+      <td>0:05:24</td>
+      <td>+0:06:36</td>
+      <td>33.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>17:27</td>
+      <td>17:37</td>
+      <td>0:10:00</td>
+      <td>0:05:33</td>
+      <td>+0:04:27</td>
+      <td>27.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>10:10</td>
+      <td>10:24</td>
+      <td>0:14:00</td>
+      <td>0:05:15</td>
+      <td>+0:08:45</td>
+      <td>40.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>11:40</td>
+      <td>11:53</td>
+      <td>0:13:00</td>
+      <td>0:05:15</td>
+      <td>+0:07:45</td>
+      <td>37.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Brèche</td>
+      <td>12:28</td>
+      <td>12:50</td>
+      <td>0:22:00</td>
+      <td>0:05:15</td>
+      <td>+0:16:45</td>
+      <td>62.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>13:25</td>
+      <td>13:44</td>
+      <td>0:19:00</td>
+      <td>0:05:15</td>
+      <td>+0:13:45</td>
+      <td>54.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Brèche</td>
+      <td>14:18</td>
+      <td>14:35</td>
+      <td>0:17:00</td>
+      <td>0:05:06</td>
+      <td>+0:11:54</td>
+      <td>50.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>15:10</td>
+      <td>15:19</td>
+      <td>0:09:00</td>
+      <td>0:05:15</td>
+      <td>+0:03:45</td>
+      <td>25.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Brèche</td>
+      <td>15:53</td>
+      <td>16:20</td>
+      <td>0:27:00</td>
+      <td>0:05:06</td>
+      <td>+0:21:54</td>
+      <td>79.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>16:56</td>
+      <td>17:07</td>
+      <td>0:11:00</td>
+      <td>0:05:24</td>
+      <td>+0:05:36</td>
+      <td>30.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10B</td>
+      <td>Brèche</td>
+      <td>19:08</td>
+      <td>19:20</td>
+      <td>0:12:00</td>
+      <td>0:05:15</td>
+      <td>+0:06:45</td>
+      <td>34.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Brèche</td>
+      <td>08:23</td>
+      <td>08:50</td>
+      <td>0:27:00</td>
+      <td>0:05:24</td>
+      <td>+0:21:36</td>
+      <td>75.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Brèche</td>
+      <td>10:08</td>
+      <td>10:20</td>
+      <td>0:12:00</td>
+      <td>0:05:06</td>
+      <td>+0:06:54</td>
+      <td>35.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Mairie d’Aiffres</td>
+      <td>10:55</td>
+      <td>11:04</td>
+      <td>0:09:00</td>
+      <td>0:05:15</td>
+      <td>+0:03:45</td>
+      <td>25.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Brèche</td>
+      <td>11:38</td>
+      <td>12:00</td>
+      <td>0:22:00</td>
+      <td>0:05:06</td>
+      <td>+0:16:54</td>
+      <td>64.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Mairie d’Aiffres</td>
+      <td>12:35</td>
+      <td>12:44</td>
+      <td>0:09:00</td>
+      <td>0:05:15</td>
+      <td>+0:03:45</td>
+      <td>25.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Brèche</td>
+      <td>13:18</td>
+      <td>13:20</td>
+      <td>0:02:00</td>
+      <td>0:05:06</td>
+      <td>-00:03:06</td>
+      <td>5.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Mairie d’Aiffres</td>
+      <td>16:25</td>
+      <td>16:37</td>
+      <td>0:12:00</td>
+      <td>0:05:15</td>
+      <td>+0:06:45</td>
+      <td>34.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>10C</td>
+      <td>Mairie d’Aiffres</td>
+      <td>17:57</td>
+      <td>18:07</td>
+      <td>0:10:00</td>
+      <td>0:05:33</td>
+      <td>+0:04:27</td>
+      <td>27.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>11A</td>
+      <td>Lycée Paul Guérin</td>
+      <td>08:51</td>
+      <td>09:01</td>
+      <td>0:10:00</td>
+      <td>0:05:51</td>
+      <td>+0:04:09</td>
+      <td>25.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>11A</td>
+      <td>Surimeau</td>
+      <td>09:40</td>
+      <td>09:42</td>
+      <td>0:02:00</td>
+      <td>0:05:51</td>
+      <td>-00:03:51</td>
+      <td>5.1</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>11A</td>
+      <td>Surimeau</td>
+      <td>12:35</td>
+      <td>12:57</td>
+      <td>0:22:00</td>
+      <td>0:05:51</td>
+      <td>+0:16:09</td>
+      <td>56.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>11A</td>
+      <td>Lycée Paul Guérin</td>
+      <td>16:36</td>
+      <td>16:56</td>
+      <td>0:20:00</td>
+      <td>0:05:51</td>
+      <td>+0:14:09</td>
+      <td>51.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>11C</td>
+      <td>Surimeau</td>
+      <td>08:55</td>
+      <td>08:57</td>
+      <td>0:02:00</td>
+      <td>0:05:51</td>
+      <td>-00:03:51</td>
+      <td>5.1</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>11C</td>
+      <td>Surimeau</td>
+      <td>11:50</td>
+      <td>12:12</td>
+      <td>0:22:00</td>
+      <td>0:05:51</td>
+      <td>+0:16:09</td>
+      <td>56.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12A</td>
+      <td>Sainte-Pezenne</td>
+      <td>09:14</td>
+      <td>09:28</td>
+      <td>0:14:00</td>
+      <td>0:06:36</td>
+      <td>+0:07:24</td>
+      <td>31.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12A</td>
+      <td>Sainte-Pezenne</td>
+      <td>16:08</td>
+      <td>16:32</td>
+      <td>0:24:00</td>
+      <td>0:06:27</td>
+      <td>+0:17:33</td>
+      <td>55.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12B</td>
+      <td>Sainte-Pezenne</td>
+      <td>08:29</td>
+      <td>08:42</td>
+      <td>0:13:00</td>
+      <td>0:06:36</td>
+      <td>+0:06:24</td>
+      <td>29.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12B</td>
+      <td>Brèche</td>
+      <td>13:08</td>
+      <td>13:20</td>
+      <td>0:12:00</td>
+      <td>0:06:36</td>
+      <td>+0:05:24</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12B</td>
+      <td>Sainte-Pezenne</td>
+      <td>19:24</td>
+      <td>19:36</td>
+      <td>0:12:00</td>
+      <td>0:06:36</td>
+      <td>+0:05:24</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12C</td>
+      <td>Sainte-Pezenne</td>
+      <td>07:57</td>
+      <td>08:11</td>
+      <td>0:14:00</td>
+      <td>0:06:18</td>
+      <td>+0:07:42</td>
+      <td>33.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12C</td>
+      <td>Brèche</td>
+      <td>08:58</td>
+      <td>09:15</td>
+      <td>0:17:00</td>
+      <td>0:07:03</td>
+      <td>+0:09:57</td>
+      <td>36.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12C</td>
+      <td>Sainte-Pezenne</td>
+      <td>09:58</td>
+      <td>10:13</td>
+      <td>0:15:00</td>
+      <td>0:06:27</td>
+      <td>+0:08:33</td>
+      <td>34.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12C</td>
+      <td>Sainte-Pezenne</td>
+      <td>13:33</td>
+      <td>13:45</td>
+      <td>0:12:00</td>
+      <td>0:06:27</td>
+      <td>+0:05:33</td>
+      <td>27.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>12C</td>
+      <td>Sainte-Pezenne</td>
+      <td>16:59</td>
+      <td>17:11</td>
+      <td>0:12:00</td>
+      <td>0:06:36</td>
+      <td>+0:05:24</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>Cholette</td>
+      <td>07:50</td>
+      <td>07:55</td>
+      <td>0:05:00</td>
+      <td>0:02:24</td>
+      <td>+0:02:36</td>
+      <td>31.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>30 Ormeaux</td>
+      <td>08:17</td>
+      <td>08:23</td>
+      <td>0:06:00</td>
+      <td>0:03:18</td>
+      <td>+0:02:42</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>30 Ormeaux</td>
+      <td>09:12</td>
+      <td>09:18</td>
+      <td>0:06:00</td>
+      <td>0:03:18</td>
+      <td>+0:02:42</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>30 Ormeaux</td>
+      <td>10:07</td>
+      <td>10:13</td>
+      <td>0:06:00</td>
+      <td>0:03:18</td>
+      <td>+0:02:42</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>30 Ormeaux</td>
+      <td>11:02</td>
+      <td>11:08</td>
+      <td>0:06:00</td>
+      <td>0:03:18</td>
+      <td>+0:02:42</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>Cholette</td>
+      <td>12:10</td>
+      <td>12:15</td>
+      <td>0:05:00</td>
+      <td>0:02:24</td>
+      <td>+0:02:36</td>
+      <td>31.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13A</td>
+      <td>Cholette</td>
+      <td>12:50</td>
+      <td>12:55</td>
+      <td>0:05:00</td>
+      <td>0:02:24</td>
+      <td>+0:02:36</td>
+      <td>31.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13B</td>
+      <td>Maisons Rouges</td>
+      <td>13:28</td>
+      <td>13:29</td>
+      <td>0:01:00</td>
+      <td>0:03:00</td>
+      <td>-00:02:00</td>
+      <td>5.0</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>13B</td>
+      <td>Cholette</td>
+      <td>13:45</td>
+      <td>13:50</td>
+      <td>0:05:00</td>
+      <td>0:02:24</td>
+      <td>+0:02:36</td>
+      <td>31.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>13B</td>
+      <td>30 Ormeaux</td>
+      <td>14:12</td>
+      <td>14:18</td>
+      <td>0:06:00</td>
+      <td>0:03:18</td>
+      <td>+0:02:42</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>14A</td>
+      <td>Maisons Rouges</td>
+      <td>13:24</td>
+      <td>13:26</td>
+      <td>0:02:00</td>
+      <td>0:03:36</td>
+      <td>-00:01:36</td>
+      <td>8.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1A</td>
+      <td>Hauts de Bessines</td>
+      <td>07:06</td>
+      <td>07:16</td>
+      <td>0:10:00</td>
+      <td>0:04:30</td>
+      <td>+0:05:30</td>
+      <td>33.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1A</td>
+      <td>Mairie de Chauray</td>
+      <td>12:09</td>
+      <td>12:13</td>
+      <td>0:04:00</td>
+      <td>0:07:57</td>
+      <td>-00:03:57</td>
+      <td>7.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1A</td>
+      <td>Mairie de Chauray</td>
+      <td>14:09</td>
+      <td>14:14</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1A</td>
+      <td>Mairie de Chauray</td>
+      <td>16:08</td>
+      <td>16:23</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1B</td>
+      <td>Mairie de Chauray</td>
+      <td>12:24</td>
+      <td>12:29</td>
+      <td>0:05:00</td>
+      <td>0:08:06</td>
+      <td>-00:03:06</td>
+      <td>9.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1B</td>
+      <td>Mairie de Chauray</td>
+      <td>14:24</td>
+      <td>14:29</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1B</td>
+      <td>Mairie de Chauray</td>
+      <td>16:23</td>
+      <td>16:28</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1B</td>
+      <td>Hauts de Bessines</td>
+      <td>17:24</td>
+      <td>17:29</td>
+      <td>0:05:00</td>
+      <td>0:08:24</td>
+      <td>-00:03:24</td>
+      <td>8.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1B</td>
+      <td>Mairie de Chauray</td>
+      <td>18:24</td>
+      <td>18:28</td>
+      <td>0:04:00</td>
+      <td>0:08:15</td>
+      <td>-00:04:15</td>
+      <td>7.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Mairie de Chauray</td>
+      <td>08:30</td>
+      <td>08:44</td>
+      <td>0:14:00</td>
+      <td>0:06:54</td>
+      <td>+0:07:06</td>
+      <td>30.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Mairie de Chauray</td>
+      <td>12:39</td>
+      <td>12:44</td>
+      <td>0:05:00</td>
+      <td>0:08:06</td>
+      <td>-00:03:06</td>
+      <td>9.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Mairie de Chauray</td>
+      <td>14:39</td>
+      <td>14:44</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Mairie de Chauray</td>
+      <td>16:38</td>
+      <td>16:43</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Hauts de Bessines</td>
+      <td>17:39</td>
+      <td>17:44</td>
+      <td>0:05:00</td>
+      <td>0:08:24</td>
+      <td>-00:03:24</td>
+      <td>8.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1C</td>
+      <td>Mairie de Chauray</td>
+      <td>18:39</td>
+      <td>18:43</td>
+      <td>0:04:00</td>
+      <td>0:08:15</td>
+      <td>-00:04:15</td>
+      <td>7.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1D</td>
+      <td>Mairie de Chauray</td>
+      <td>12:54</td>
+      <td>12:59</td>
+      <td>0:05:00</td>
+      <td>0:08:06</td>
+      <td>-00:03:06</td>
+      <td>9.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1D</td>
+      <td>Mairie de Chauray</td>
+      <td>14:53</td>
+      <td>14:58</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1D</td>
+      <td>Mairie de Chauray</td>
+      <td>16:53</td>
+      <td>17:07</td>
+      <td>0:14:00</td>
+      <td>0:07:48</td>
+      <td>+0:06:12</td>
+      <td>26.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1E</td>
+      <td>Mairie de Chauray</td>
+      <td>09:00</td>
+      <td>09:14</td>
+      <td>0:14:00</td>
+      <td>0:06:54</td>
+      <td>+0:07:06</td>
+      <td>30.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1E</td>
+      <td>Mairie de Chauray</td>
+      <td>13:09</td>
+      <td>13:14</td>
+      <td>0:05:00</td>
+      <td>0:08:06</td>
+      <td>-00:03:06</td>
+      <td>9.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1E</td>
+      <td>Mairie de Chauray</td>
+      <td>15:08</td>
+      <td>15:13</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1E</td>
+      <td>Hauts de Bessines</td>
+      <td>18:09</td>
+      <td>18:14</td>
+      <td>0:05:00</td>
+      <td>0:08:33</td>
+      <td>-00:03:33</td>
+      <td>8.8</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1E</td>
+      <td>Mairie de Chauray</td>
+      <td>19:01</td>
+      <td>19:15</td>
+      <td>0:14:00</td>
+      <td>0:07:03</td>
+      <td>+0:06:57</td>
+      <td>29.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1F</td>
+      <td>Mairie de Chauray</td>
+      <td>11:23</td>
+      <td>11:28</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1F</td>
+      <td>Mairie de Chauray</td>
+      <td>13:24</td>
+      <td>13:29</td>
+      <td>0:05:00</td>
+      <td>0:08:06</td>
+      <td>-00:03:06</td>
+      <td>9.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1F</td>
+      <td>Mairie de Chauray</td>
+      <td>15:23</td>
+      <td>15:28</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1G</td>
+      <td>Mairie de Chauray</td>
+      <td>11:38</td>
+      <td>11:43</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1G</td>
+      <td>Mairie de Chauray</td>
+      <td>13:39</td>
+      <td>13:44</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1G</td>
+      <td>Mairie de Chauray</td>
+      <td>15:38</td>
+      <td>15:43</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1G</td>
+      <td>Mairie de Chauray</td>
+      <td>17:39</td>
+      <td>17:42</td>
+      <td>0:03:00</td>
+      <td>0:08:15</td>
+      <td>-00:05:15</td>
+      <td>5.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1H</td>
+      <td>Mairie de Chauray</td>
+      <td>07:44</td>
+      <td>08:07</td>
+      <td>0:23:00</td>
+      <td>0:06:27</td>
+      <td>+0:16:33</td>
+      <td>53.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>1H</td>
+      <td>Mairie de Chauray</td>
+      <td>11:54</td>
+      <td>11:58</td>
+      <td>0:04:00</td>
+      <td>0:07:57</td>
+      <td>-00:03:57</td>
+      <td>7.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1H</td>
+      <td>Mairie de Chauray</td>
+      <td>13:54</td>
+      <td>13:59</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>1H</td>
+      <td>Mairie de Chauray</td>
+      <td>15:53</td>
+      <td>16:08</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>07:13</td>
+      <td>07:26</td>
+      <td>0:13:00</td>
+      <td>0:06:27</td>
+      <td>+0:06:33</td>
+      <td>30.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>08:13</td>
+      <td>08:33</td>
+      <td>0:20:00</td>
+      <td>0:07:03</td>
+      <td>+0:12:57</td>
+      <td>42.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>10:18</td>
+      <td>10:30</td>
+      <td>0:12:00</td>
+      <td>0:06:54</td>
+      <td>+0:05:06</td>
+      <td>26.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>11:14</td>
+      <td>11:27</td>
+      <td>0:13:00</td>
+      <td>0:06:36</td>
+      <td>+0:06:24</td>
+      <td>29.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>12:13</td>
+      <td>12:29</td>
+      <td>0:16:00</td>
+      <td>0:06:54</td>
+      <td>+0:09:06</td>
+      <td>34.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>13:14</td>
+      <td>13:34</td>
+      <td>0:20:00</td>
+      <td>0:06:45</td>
+      <td>+0:13:15</td>
+      <td>44.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>14:18</td>
+      <td>14:30</td>
+      <td>0:12:00</td>
+      <td>0:06:36</td>
+      <td>+0:05:24</td>
+      <td>27.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>15:14</td>
+      <td>15:31</td>
+      <td>0:17:00</td>
+      <td>0:06:36</td>
+      <td>+0:10:24</td>
+      <td>38.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>17:13</td>
+      <td>17:28</td>
+      <td>0:15:00</td>
+      <td>0:07:30</td>
+      <td>+0:07:30</td>
+      <td>30.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Mairie d’Aiffres</td>
+      <td>18:20</td>
+      <td>18:34</td>
+      <td>0:14:00</td>
+      <td>0:07:48</td>
+      <td>+0:06:12</td>
+      <td>26.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3A</td>
+      <td>Sainte-Pezenne</td>
+      <td>19:20</td>
+      <td>19:33</td>
+      <td>0:13:00</td>
+      <td>0:06:54</td>
+      <td>+0:06:06</td>
+      <td>28.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Thomas-Jean Main</td>
+      <td>07:44</td>
+      <td>07:49</td>
+      <td>0:05:00</td>
+      <td>0:02:06</td>
+      <td>+0:02:54</td>
+      <td>35.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>08:39</td>
+      <td>09:00</td>
+      <td>0:21:00</td>
+      <td>0:07:30</td>
+      <td>+0:13:30</td>
+      <td>42.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Sainte-Pezenne</td>
+      <td>09:43</td>
+      <td>10:02</td>
+      <td>0:19:00</td>
+      <td>0:06:27</td>
+      <td>+0:12:33</td>
+      <td>44.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>10:48</td>
+      <td>11:00</td>
+      <td>0:12:00</td>
+      <td>0:06:54</td>
+      <td>+0:05:06</td>
+      <td>26.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3B</td>
+      <td>Mairie d’Aiffres</td>
+      <td>12:38</td>
+      <td>12:50</td>
+      <td>0:12:00</td>
+      <td>0:06:54</td>
+      <td>+0:05:06</td>
+      <td>26.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3C</td>
+      <td>Brèche</td>
+      <td>07:33</td>
+      <td>07:35</td>
+      <td>0:02:00</td>
+      <td>0:03:27</td>
+      <td>-00:01:27</td>
+      <td>8.7</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>3C</td>
+      <td>Thomas-Jean Main</td>
+      <td>07:49</td>
+      <td>08:08</td>
+      <td>0:19:00</td>
+      <td>0:02:06</td>
+      <td>+0:16:54</td>
+      <td>135.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3C</td>
+      <td>Mairie d’Aiffres</td>
+      <td>12:58</td>
+      <td>13:10</td>
+      <td>0:12:00</td>
+      <td>0:06:54</td>
+      <td>+0:05:06</td>
+      <td>26.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3C</td>
+      <td>Sainte-Pezenne</td>
+      <td>17:39</td>
+      <td>17:55</td>
+      <td>0:16:00</td>
+      <td>0:07:39</td>
+      <td>+0:08:21</td>
+      <td>31.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Mairie d’Aiffres</td>
+      <td>07:18</td>
+      <td>07:30</td>
+      <td>0:12:00</td>
+      <td>0:03:27</td>
+      <td>+0:08:33</td>
+      <td>52.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Sainte-Pezenne</td>
+      <td>10:13</td>
+      <td>10:32</td>
+      <td>0:19:00</td>
+      <td>0:06:27</td>
+      <td>+0:12:33</td>
+      <td>44.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Brèche</td>
+      <td>12:38</td>
+      <td>12:55</td>
+      <td>0:17:00</td>
+      <td>0:02:06</td>
+      <td>+0:14:54</td>
+      <td>121.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Mairie d’Aiffres</td>
+      <td>13:18</td>
+      <td>13:30</td>
+      <td>0:12:00</td>
+      <td>0:03:27</td>
+      <td>+0:08:33</td>
+      <td>52.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Sainte-Pezenne</td>
+      <td>14:14</td>
+      <td>14:34</td>
+      <td>0:20:00</td>
+      <td>0:06:36</td>
+      <td>+0:13:24</td>
+      <td>45.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3D</td>
+      <td>Mairie d’Aiffres</td>
+      <td>17:15</td>
+      <td>17:28</td>
+      <td>0:13:00</td>
+      <td>0:07:39</td>
+      <td>+0:05:21</td>
+      <td>25.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Mairie d’Aiffres</td>
+      <td>07:38</td>
+      <td>07:53</td>
+      <td>0:15:00</td>
+      <td>0:06:36</td>
+      <td>+0:08:24</td>
+      <td>34.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Sainte-Pezenne</td>
+      <td>08:43</td>
+      <td>09:00</td>
+      <td>0:17:00</td>
+      <td>0:07:30</td>
+      <td>+0:09:30</td>
+      <td>34.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Mairie d’Aiffres</td>
+      <td>09:48</td>
+      <td>10:05</td>
+      <td>0:17:00</td>
+      <td>0:07:12</td>
+      <td>+0:09:48</td>
+      <td>35.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Sainte-Pezenne</td>
+      <td>10:48</td>
+      <td>11:02</td>
+      <td>0:14:00</td>
+      <td>0:06:27</td>
+      <td>+0:07:33</td>
+      <td>32.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Sainte-Pezenne</td>
+      <td>12:41</td>
+      <td>12:54</td>
+      <td>0:13:00</td>
+      <td>0:07:03</td>
+      <td>+0:05:57</td>
+      <td>27.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3E</td>
+      <td>Sainte-Pezenne</td>
+      <td>19:48</td>
+      <td>20:04</td>
+      <td>0:16:00</td>
+      <td>0:06:27</td>
+      <td>+0:09:33</td>
+      <td>37.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Sainte-Pezenne</td>
+      <td>12:54</td>
+      <td>13:14</td>
+      <td>0:20:00</td>
+      <td>0:06:45</td>
+      <td>+0:13:15</td>
+      <td>44.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Mairie d’Aiffres</td>
+      <td>13:58</td>
+      <td>14:00</td>
+      <td>0:02:00</td>
+      <td>0:06:36</td>
+      <td>-00:04:36</td>
+      <td>4.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Sainte-Pezenne</td>
+      <td>14:44</td>
+      <td>15:04</td>
+      <td>0:20:00</td>
+      <td>0:06:36</td>
+      <td>+0:13:24</td>
+      <td>45.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Mairie d’Aiffres</td>
+      <td>15:48</td>
+      <td>16:08</td>
+      <td>0:20:00</td>
+      <td>0:06:36</td>
+      <td>+0:13:24</td>
+      <td>45.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>Mairie d’Aiffres</td>
+      <td>19:48</td>
+      <td>20:00</td>
+      <td>0:12:00</td>
+      <td>0:06:45</td>
+      <td>+0:05:15</td>
+      <td>26.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4A</td>
+      <td>Château Driguet</td>
+      <td>13:02</td>
+      <td>13:17</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4A</td>
+      <td>Pôle Universitaire</td>
+      <td>17:54</td>
+      <td>17:59</td>
+      <td>0:05:00</td>
+      <td>0:07:48</td>
+      <td>-00:02:48</td>
+      <td>9.6</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Château Driguet</td>
+      <td>07:47</td>
+      <td>08:02</td>
+      <td>0:15:00</td>
+      <td>0:06:54</td>
+      <td>+0:08:06</td>
+      <td>32.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Château Driguet</td>
+      <td>09:48</td>
+      <td>10:02</td>
+      <td>0:14:00</td>
+      <td>0:07:12</td>
+      <td>+0:06:48</td>
+      <td>29.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Château Driguet</td>
+      <td>11:48</td>
+      <td>11:52</td>
+      <td>0:04:00</td>
+      <td>0:07:12</td>
+      <td>-00:03:12</td>
+      <td>8.3</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Pôle Universitaire</td>
+      <td>12:42</td>
+      <td>12:56</td>
+      <td>0:14:00</td>
+      <td>0:07:30</td>
+      <td>+0:06:30</td>
+      <td>28.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Château Driguet</td>
+      <td>13:43</td>
+      <td>14:02</td>
+      <td>0:19:00</td>
+      <td>0:07:03</td>
+      <td>+0:11:57</td>
+      <td>40.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Pôle Universitaire</td>
+      <td>14:51</td>
+      <td>15:11</td>
+      <td>0:20:00</td>
+      <td>0:07:21</td>
+      <td>+0:12:39</td>
+      <td>40.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Château Driguet</td>
+      <td>16:02</td>
+      <td>16:22</td>
+      <td>0:20:00</td>
+      <td>0:07:39</td>
+      <td>+0:12:21</td>
+      <td>39.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4B</td>
+      <td>Pôle Universitaire</td>
+      <td>19:14</td>
+      <td>19:30</td>
+      <td>0:16:00</td>
+      <td>0:07:03</td>
+      <td>+0:08:57</td>
+      <td>34.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4C</td>
+      <td>Pôle Universitaire</td>
+      <td>07:11</td>
+      <td>07:26</td>
+      <td>0:15:00</td>
+      <td>0:06:00</td>
+      <td>+0:09:00</td>
+      <td>37.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4C</td>
+      <td>Pôle Universitaire</td>
+      <td>12:57</td>
+      <td>13:11</td>
+      <td>0:14:00</td>
+      <td>0:06:45</td>
+      <td>+0:07:15</td>
+      <td>31.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4C</td>
+      <td>Château Driguet</td>
+      <td>17:07</td>
+      <td>17:22</td>
+      <td>0:15:00</td>
+      <td>0:07:57</td>
+      <td>+0:07:03</td>
+      <td>28.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Pôle Universitaire</td>
+      <td>07:26</td>
+      <td>07:41</td>
+      <td>0:15:00</td>
+      <td>0:06:00</td>
+      <td>+0:09:00</td>
+      <td>37.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Pôle Universitaire</td>
+      <td>09:26</td>
+      <td>09:30</td>
+      <td>0:04:00</td>
+      <td>0:07:21</td>
+      <td>-00:03:21</td>
+      <td>8.2</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Château Driguet</td>
+      <td>10:22</td>
+      <td>10:37</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Château Driguet</td>
+      <td>12:22</td>
+      <td>12:37</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Pôle Universitaire</td>
+      <td>13:21</td>
+      <td>13:41</td>
+      <td>0:20:00</td>
+      <td>0:06:36</td>
+      <td>+0:13:24</td>
+      <td>45.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Château Driguet</td>
+      <td>14:32</td>
+      <td>14:37</td>
+      <td>0:05:00</td>
+      <td>0:07:39</td>
+      <td>-00:02:39</td>
+      <td>9.8</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Pôle Universitaire</td>
+      <td>15:21</td>
+      <td>15:39</td>
+      <td>0:18:00</td>
+      <td>0:06:36</td>
+      <td>+0:11:24</td>
+      <td>40.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Château Driguet</td>
+      <td>18:32</td>
+      <td>18:52</td>
+      <td>0:20:00</td>
+      <td>0:07:57</td>
+      <td>+0:12:03</td>
+      <td>37.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4D</td>
+      <td>Pôle Universitaire</td>
+      <td>19:41</td>
+      <td>20:01</td>
+      <td>0:20:00</td>
+      <td>0:07:21</td>
+      <td>+0:12:39</td>
+      <td>40.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4E</td>
+      <td>Château Driguet</td>
+      <td>08:48</td>
+      <td>09:02</td>
+      <td>0:14:00</td>
+      <td>0:07:12</td>
+      <td>+0:06:48</td>
+      <td>29.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4E</td>
+      <td>Château Driguet</td>
+      <td>10:48</td>
+      <td>11:02</td>
+      <td>0:14:00</td>
+      <td>0:07:12</td>
+      <td>+0:06:48</td>
+      <td>29.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4E</td>
+      <td>Pôle Universitaire</td>
+      <td>11:51</td>
+      <td>11:55</td>
+      <td>0:04:00</td>
+      <td>0:07:21</td>
+      <td>-00:03:21</td>
+      <td>8.2</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4F</td>
+      <td>Château Driguet</td>
+      <td>09:32</td>
+      <td>09:37</td>
+      <td>0:05:00</td>
+      <td>0:07:57</td>
+      <td>-00:02:57</td>
+      <td>9.4</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4F</td>
+      <td>Château Driguet</td>
+      <td>11:22</td>
+      <td>11:37</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4F</td>
+      <td>Pôle Universitaire</td>
+      <td>14:21</td>
+      <td>14:41</td>
+      <td>0:20:00</td>
+      <td>0:07:21</td>
+      <td>+0:12:39</td>
+      <td>40.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>4F</td>
+      <td>Château Driguet</td>
+      <td>15:28</td>
+      <td>15:32</td>
+      <td>0:04:00</td>
+      <td>0:07:03</td>
+      <td>-00:03:03</td>
+      <td>8.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>4F</td>
+      <td>Pôle Universitaire</td>
+      <td>16:24</td>
+      <td>16:39</td>
+      <td>0:15:00</td>
+      <td>0:07:48</td>
+      <td>+0:07:12</td>
+      <td>28.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>Saint-Liguaire</td>
+      <td>10:20</td>
+      <td>10:23</td>
+      <td>0:03:00</td>
+      <td>0:05:33</td>
+      <td>-00:02:33</td>
+      <td>8.1</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>Brizeaux – CAF</td>
+      <td>11:00</td>
+      <td>11:13</td>
+      <td>0:13:00</td>
+      <td>0:05:33</td>
+      <td>+0:07:27</td>
+      <td>35.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>Saint-Liguaire</td>
+      <td>13:20</td>
+      <td>13:39</td>
+      <td>0:19:00</td>
+      <td>0:05:33</td>
+      <td>+0:13:27</td>
+      <td>51.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>Brizeaux – CAF</td>
+      <td>15:45</td>
+      <td>15:48</td>
+      <td>0:03:00</td>
+      <td>0:05:33</td>
+      <td>-00:02:33</td>
+      <td>8.1</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>La Roussille ITEP</td>
+      <td>16:34</td>
+      <td>16:37</td>
+      <td>0:03:00</td>
+      <td>0:06:54</td>
+      <td>-00:03:54</td>
+      <td>6.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5A</td>
+      <td>Brizeaux – CAF</td>
+      <td>19:05</td>
+      <td>19:23</td>
+      <td>0:18:00</td>
+      <td>0:06:27</td>
+      <td>+0:11:33</td>
+      <td>41.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5B</td>
+      <td>Brizeaux – CAF</td>
+      <td>11:25</td>
+      <td>11:43</td>
+      <td>0:18:00</td>
+      <td>0:05:33</td>
+      <td>+0:12:27</td>
+      <td>48.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5B</td>
+      <td>Saint-Liguaire</td>
+      <td>16:51</td>
+      <td>17:03</td>
+      <td>0:12:00</td>
+      <td>0:05:42</td>
+      <td>+0:06:18</td>
+      <td>31.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5B</td>
+      <td>Saint-Liguaire</td>
+      <td>18:26</td>
+      <td>18:48</td>
+      <td>0:22:00</td>
+      <td>0:05:42</td>
+      <td>+0:16:18</td>
+      <td>57.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5B</td>
+      <td>Brizeaux – CAF</td>
+      <td>19:25</td>
+      <td>19:43</td>
+      <td>0:18:00</td>
+      <td>0:05:33</td>
+      <td>+0:12:27</td>
+      <td>48.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>La Roussille ITEP</td>
+      <td>07:58</td>
+      <td>08:02</td>
+      <td>0:04:00</td>
+      <td>0:06:45</td>
+      <td>-00:02:45</td>
+      <td>8.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>La Roussille ITEP</td>
+      <td>09:38</td>
+      <td>09:42</td>
+      <td>0:04:00</td>
+      <td>0:06:45</td>
+      <td>-00:02:45</td>
+      <td>8.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>Brizeaux – CAF</td>
+      <td>10:25</td>
+      <td>10:43</td>
+      <td>0:18:00</td>
+      <td>0:06:27</td>
+      <td>+0:11:33</td>
+      <td>41.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>La Roussille ITEP</td>
+      <td>11:28</td>
+      <td>11:32</td>
+      <td>0:04:00</td>
+      <td>0:06:45</td>
+      <td>-00:02:45</td>
+      <td>8.9</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>Brizeaux – CAF</td>
+      <td>16:35</td>
+      <td>16:48</td>
+      <td>0:13:00</td>
+      <td>0:05:33</td>
+      <td>+0:07:27</td>
+      <td>35.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5C</td>
+      <td>La Roussille ITEP</td>
+      <td>19:19</td>
+      <td>19:32</td>
+      <td>0:13:00</td>
+      <td>0:06:54</td>
+      <td>+0:06:06</td>
+      <td>28.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5D</td>
+      <td>Brizeaux – CAF</td>
+      <td>13:40</td>
+      <td>13:53</td>
+      <td>0:13:00</td>
+      <td>0:06:18</td>
+      <td>+0:06:42</td>
+      <td>31.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5D</td>
+      <td>Saint-Liguaire</td>
+      <td>16:00</td>
+      <td>16:18</td>
+      <td>0:18:00</td>
+      <td>0:05:33</td>
+      <td>+0:12:27</td>
+      <td>48.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5D</td>
+      <td>Brizeaux – CAF</td>
+      <td>16:55</td>
+      <td>17:08</td>
+      <td>0:13:00</td>
+      <td>0:05:33</td>
+      <td>+0:07:27</td>
+      <td>35.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5E</td>
+      <td>Brizeaux – CAF</td>
+      <td>16:15</td>
+      <td>16:28</td>
+      <td>0:13:00</td>
+      <td>0:05:33</td>
+      <td>+0:07:27</td>
+      <td>35.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>5E</td>
+      <td>La Roussille ITEP</td>
+      <td>18:59</td>
+      <td>19:12</td>
+      <td>0:13:00</td>
+      <td>0:06:54</td>
+      <td>+0:06:06</td>
+      <td>28.3</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6A</td>
+      <td>Maisons Rouges</td>
+      <td>10:53</td>
+      <td>11:09</td>
+      <td>0:16:00</td>
+      <td>0:06:18</td>
+      <td>+0:09:42</td>
+      <td>38.1</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6A</td>
+      <td>Chaintre Brûlée</td>
+      <td>13:29</td>
+      <td>13:42</td>
+      <td>0:13:00</td>
+      <td>0:06:09</td>
+      <td>+0:06:51</td>
+      <td>31.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6A</td>
+      <td>Maisons Rouges</td>
+      <td>18:20</td>
+      <td>18:34</td>
+      <td>0:14:00</td>
+      <td>0:07:12</td>
+      <td>+0:06:48</td>
+      <td>29.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6B</td>
+      <td>Maisons Rouges</td>
+      <td>11:29</td>
+      <td>11:44</td>
+      <td>0:15:00</td>
+      <td>0:06:27</td>
+      <td>+0:08:33</td>
+      <td>34.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6B</td>
+      <td>Chaintre Brûlée</td>
+      <td>12:27</td>
+      <td>12:47</td>
+      <td>0:20:00</td>
+      <td>0:06:27</td>
+      <td>+0:13:33</td>
+      <td>46.5</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6B</td>
+      <td>Chaintre Brûlée</td>
+      <td>16:50</td>
+      <td>16:53</td>
+      <td>0:03:00</td>
+      <td>0:06:54</td>
+      <td>-00:03:54</td>
+      <td>6.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>6C</td>
+      <td>Chaintre Brûlée</td>
+      <td>07:29</td>
+      <td>07:39</td>
+      <td>0:10:00</td>
+      <td>0:05:51</td>
+      <td>+0:04:09</td>
+      <td>25.6</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6C</td>
+      <td>Maisons Rouges</td>
+      <td>10:18</td>
+      <td>10:29</td>
+      <td>0:11:00</td>
+      <td>0:06:18</td>
+      <td>+0:04:42</td>
+      <td>26.2</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6C</td>
+      <td>Chaintre Brûlée</td>
+      <td>13:00</td>
+      <td>13:17</td>
+      <td>0:17:00</td>
+      <td>0:07:12</td>
+      <td>+0:09:48</td>
+      <td>35.4</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6C</td>
+      <td>Maisons Rouges</td>
+      <td>13:58</td>
+      <td>14:09</td>
+      <td>0:11:00</td>
+      <td>0:06:09</td>
+      <td>+0:04:51</td>
+      <td>26.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6C</td>
+      <td>Maisons Rouges</td>
+      <td>17:25</td>
+      <td>17:29</td>
+      <td>0:04:00</td>
+      <td>0:07:03</td>
+      <td>-00:03:03</td>
+      <td>8.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>6D</td>
+      <td>Maisons Rouges</td>
+      <td>08:58</td>
+      <td>09:00</td>
+      <td>0:02:00</td>
+      <td>0:06:36</td>
+      <td>-00:04:36</td>
+      <td>4.5</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>6D</td>
+      <td>Maisons Rouges</td>
+      <td>14:59</td>
+      <td>15:14</td>
+      <td>0:15:00</td>
+      <td>0:06:18</td>
+      <td>+0:08:42</td>
+      <td>35.7</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>6D</td>
+      <td>Combes</td>
+      <td>16:56</td>
+      <td>16:58</td>
+      <td>0:02:00</td>
+      <td>0:07:48</td>
+      <td>-00:05:48</td>
+      <td>3.8</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>7A</td>
+      <td>Pôle Atlantique</td>
+      <td>12:58</td>
+      <td>13:42</td>
+      <td>0:44:00</td>
+      <td>0:03:00</td>
+      <td>+0:41:00</td>
+      <td>220.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>7A</td>
+      <td>Pôle Atlantique</td>
+      <td>16:01</td>
+      <td>16:14</td>
+      <td>0:13:00</td>
+      <td>0:03:00</td>
+      <td>+0:10:00</td>
+      <td>65.0</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>7A</td>
+      <td>Maisons Rouges</td>
+      <td>17:43</td>
+      <td>17:45</td>
+      <td>0:02:00</td>
+      <td>0:04:57</td>
+      <td>-00:02:57</td>
+      <td>6.1</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>7A</td>
+      <td>Gare de Niort</td>
+      <td>18:13</td>
+      <td>18:25</td>
+      <td>0:12:00</td>
+      <td>0:04:12</td>
+      <td>+0:07:48</td>
+      <td>42.9</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>7B</td>
+      <td>Maisons Rouges</td>
+      <td>09:49</td>
+      <td>09:50</td>
+      <td>0:01:00</td>
+      <td>0:04:03</td>
+      <td>-00:03:03</td>
+      <td>3.7</td>
+      <td>Trop court</td>
+    </tr>
+    <tr>
+      <td>7B</td>
+      <td>Maisons Rouges</td>
+      <td>18:17</td>
+      <td>18:25</td>
+      <td>0:08:00</td>
+      <td>0:04:39</td>
+      <td>+0:03:21</td>
+      <td>25.8</td>
+      <td>Trop long</td>
+    </tr>
+    <tr>
+      <td>7B</td>
+      <td>Gare de Niort</td>
+      <td>18:52</td>
+      <td>19:00</td>
+      <td>0:08:00</td>
+      <td>0:04:03</td>
+      <td>+0:03:57</td>
+      <td>29.6</td>
+      <td>Trop long</td>
+    </tr>
+  </tbody>
+</table>
+    <script>
+        $(document).ready( function () {
+            var table = $('#table_rapport').DataTable({
+                paging: false,
+                order: [[0, 'asc']],
+                searching: false,
+                autoWidth: true,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-center' }
+                ],
+                language: {
+                    info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                    infoEmpty: "Aucun battement problématique",
+                    infoFiltered: "",
+                }
+            });
+
+            // Filtres par colonne
+            $('#table_rapport thead tr').clone(true).appendTo('#table_rapport thead');
+            $('#table_rapport thead tr:eq(1) th').each(function(i) {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Filtrer ' + title + '" style="width: 100%;" />');
+
+                $('input', this).on('keyup change', function() {
+                    if (table.column(i).search() !== this.value) {
+                        table.column(i).search(this.value).draw();
+                    }
+                });
+            });
+
+            // Appliquer des couleurs aux statuts
+            $('#table_rapport tbody tr').each(function() {
+                var statut = $(this).find("td:last").text();
+                if (statut === "Trop court") $(this).addClass("court");
+                if (statut === "Trop long") $(this).addClass("long");
+            });
+        } );
+    </script>
+</body>
+</html>
